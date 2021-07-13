@@ -10,7 +10,6 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.stereotype.Component;
 
 @ConfigurationProperties(prefix = "jap")
-@Component
 public class JapProperties extends JapConfig {
     @NestedConfigurationProperty
     private SimpleConfig simple = new SimpleConfig();
