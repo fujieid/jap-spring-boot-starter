@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.fujieid.jap.spring.boot</groupId>
-    <artifactId>jap-simple-springboot-starter</artifactId>
+    <artifactId>jap-springboot-starter</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>jap-simple-springboot-starter</name>
-    <description>Demo project for Spring Boot</description>
+    <name>jap-springboot-starter</name>
+    <description>JustAuthPlus Spring Boot Starter</description>
     <properties>
         <java.version>11</java.version>
     </properties>

@@ -1,4 +1,4 @@
-package com.fujieid.jap.spring.boot.japsimplespringbootstarter.autoconfigure;
+package com.fujieid.jap.spring.boot.starter.autoconfigure;
 
 import me.zhyd.oauth.config.AuthConfig;
 import org.springframework.boot.context.properties.ConfigurationProperties;

@@ -1,4 +1,4 @@
-package com.fujieid.jap.spring.boot.japsimplespringbootstarter.autoconfigure;
+package com.fujieid.jap.spring.boot.starter.autoconfigure;
 
 import com.fujieid.jap.core.config.JapConfig;
 import com.fujieid.jap.oauth2.OAuthConfig;
@@ -7,7 +7,6 @@ import com.fujieid.jap.simple.SimpleConfig;
 import com.fujieid.jap.social.SocialConfig;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
-import org.springframework.stereotype.Component;
 
 @ConfigurationProperties(prefix = "jap")
 public class JapProperties extends JapConfig {

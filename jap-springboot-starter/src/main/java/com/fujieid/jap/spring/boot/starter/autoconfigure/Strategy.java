@@ -1,4 +1,4 @@
-package com.fujieid.jap.spring.boot.japsimplespringbootstarter.autoconfigure;
+package com.fujieid.jap.spring.boot.starter.autoconfigure;
 
 import com.fujieid.jap.core.config.AuthenticateConfig;
 import com.fujieid.jap.oauth2.Oauth2Strategy;

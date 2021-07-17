@@ -1,6 +1,6 @@
-package com.fujieid.jap.spring.boot.japsimplespringbootstarter.autoconfigure;
+package com.fujieid.jap.spring.boot.starter.autoconfigure;
 
-import com.fujieid.jap.spring.boot.japsimplespringbootstarter.JapStrategyFactory;
+import com.fujieid.jap.spring.boot.starter.JapStrategyFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;

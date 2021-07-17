@@ -1,4 +1,4 @@
-package com.fujieid.jap.spring.boot.japsimplespringbootstarter;
+package com.fujieid.jap.spring.boot.starter;
 
 import com.fujieid.jap.core.JapUser;
 import com.fujieid.jap.core.JapUserService;
