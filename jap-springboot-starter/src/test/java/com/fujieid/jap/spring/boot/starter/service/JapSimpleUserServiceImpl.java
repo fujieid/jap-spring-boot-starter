@@ -1,5 +1,6 @@
-package com.fujieid.jap.spring.boot.starter;
+package com.fujieid.jap.spring.boot.starter.service;
 
+import cn.hutool.core.lang.UUID;
 import com.fujieid.jap.core.JapUser;
 import com.fujieid.jap.core.JapUserService;
 import org.springframework.stereotype.Service;
@@ -7,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service("simple")
+@Service
 public class JapSimpleUserServiceImpl implements JapUserService {
     /**
      * 模拟 DB 操作
@@ -16,9 +17,9 @@ public class JapSimpleUserServiceImpl implements JapUserService {
 
     static {
         // 模拟数据库中的数据
-        userDatas.add(new JapUser().setUsername("jap").setPassword("jap"));
+        userDatas.add(new JapUser().setUsername("jap").setPassword("jap").setUserId("jap"));
         for (int i = 0; i < 10; i++) {
-            userDatas.add(new JapUser().setUsername("jap" + i).setPassword("jap" + i));
+            userDatas.add(new JapUser().setUsername("jap" + i).setPassword("jap" + i).setUserId(UUID.fastUUID().toString()));
         }
     }
 

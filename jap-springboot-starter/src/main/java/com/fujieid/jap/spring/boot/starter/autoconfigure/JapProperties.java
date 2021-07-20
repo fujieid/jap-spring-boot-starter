@@ -6,12 +6,17 @@ import com.fujieid.jap.oidc.OidcConfig;
 import com.fujieid.jap.simple.SimpleConfig;
 import com.fujieid.jap.social.SocialConfig;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 @ConfigurationProperties(prefix = "jap")
 public class JapProperties extends JapConfig {
     @NestedConfigurationProperty
     private SimpleConfig simple = new SimpleConfig();
+
+    private Class<?> simpleUserService;
+
+    private Class<?> socialUserService;
 
     @NestedConfigurationProperty
     private SocialConfig social = new SocialConfig();
@@ -52,5 +57,21 @@ public class JapProperties extends JapConfig {
 
     public void setOidc(OidcConfig oidc) {
         this.oidc = oidc;
+    }
+
+    public Class<?> getSimpleUserService() {
+        return simpleUserService;
+    }
+
+    public void setSimpleUserService(Class<?> simpleUserService) {
+        this.simpleUserService = simpleUserService;
+    }
+
+    public Class<?> getSocialUserService() {
+        return socialUserService;
+    }
+
+    public void setSocialUserService(Class<?> socialUserService) {
+        this.socialUserService = socialUserService;
     }
 }

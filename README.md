@@ -31,5 +31,103 @@
    return socialStrategy.authenticate(japProperties.getSocial(), request, response);
    ```
 
-   
 
+
+
+**2021/7/17**
+
+用一种授权方式登录后会在session上记录request，所以集成多种登录策略需要进一步思考。
+
+分析一下SimpleStrategy#authenticate()源码：
+
+```java
+
+ @Override
+    public JapResponse authenticate(AuthenticateConfig config, HttpServletRequest request, HttpServletResponse response) {
+        // Convert AuthenticateConfig to SimpleConfig
+        try {
+            //确保AuthenticateConfig实例的类型为SimpleConfig
+            this.checkAuthenticateConfig(config, SimpleConfig.class);
+        } catch (JapException e) {
+            return JapResponse.error(e.getErrorCode(), e.getErrorMessage());
+        }
+        SimpleConfig simpleConfig = (SimpleConfig) config;
+
+        JapUser sessionUser = null;
+        try {
+            //里面会调用父类AbstractJapStrategy的checkSession()，看看这个用户是否已经登录了
+            //用session和cookie保存登录状态
+            sessionUser = this.checkSessionAndCookie(simpleConfig, request, response);
+        } catch (JapException e) {
+            return JapResponse.error(e.getErrorCode(), e.getErrorMessage());
+        }
+        if (null != sessionUser) {
+            return JapResponse.success(sessionUser);
+        }
+		//走到这里表示没有登陆过
+        UsernamePasswordCredential credential = this.doResolveCredential(request, simpleConfig);
+        if (null == credential) {
+            return JapResponse.error(JapErrorCode.MISS_CREDENTIALS);
+        }
+        JapUser user = japUserService.getByName(credential.getUsername());
+        if (null == user) {
+            return JapResponse.error(JapErrorCode.NOT_EXIST_USER);
+        }
+
+        boolean valid = japUserService.validPassword(credential.getPassword(), user);
+        if (!valid) {
+            return JapResponse.error(JapErrorCode.INVALID_PASSWORD);
+        }
+
+        return this.loginSuccess(simpleConfig, credential, user, request, response);
+    }
+```
+
+`AbstractJapStrategy`中有这么一个构造器值得注意：
+
+```java
+public AbstractJapStrategy(JapUserService japUserService, JapConfig japConfig, JapUserStore japUserStore, JapCache japCache) {
+        this.japUserService = japUserService;
+        if (japConfig.isSso()) {
+            // init Kisso config
+            JapSsoHelper.initKissoConfig(japConfig.getSsoConfig());
+        }
+        this.japContext = new JapContext(japUserStore, japCache, japConfig);
+
+        JapAuthentication.setContext(this.japContext);//这一个地方非常关键
+
+        // Update the cache validity period
+        JapCacheConfig.timeout = japConfig.getCacheExpireTime();
+    }
+```
+
+`JapAuthentication.setContext(this.japContext);`值得深入考虑。首先这是一个static对象，也就是一个项目中只有一个`JapAuthentication`对象，其中只有一个参数`JapContext`，但是每次声明一个strategy的时候都会调用上面这个构造器，这样`JapAuthentication`里面的`JapContext`就有很大问题，为最后一个创建的stragegy产生的。
+
+所以现在要解决的问题是，采用同一个`JapContext`，这样里边的`japUserStore`,`japCache`,`japConfig`才不会乱来。
+
+`JapAuthentication`很重要，除了从context属性外，其中的checkUser等用来检查当前用户是否登录，用Session记录登录状态。
+
+
+
+
+
+接口`JapUserStore`
+
+两个实现类：`SessionJapUserStore`、`SsoJapUserStore`（严格说这个类是继承了SessionJapUserStore的）
+
+主要在`AbstractJapStrategy`。以`SessionJapUserStore`，存储的是japUser实例，用session来存放
+
+
+
+
+
+
+
+接口`JapCache`
+
+实现类：`JapLocalCache`。里边用到了AQS作为锁的实现，有点意思，但是不难。采用的数据结构是map。
+
+用处：
+
+1. `JapTokenHelper`，里面的方法们只需要两个参数，userId和token，也就是在这里japcache的用处是将userId作为key，token作为value。
+2. `OdicStrategy`和`OAuth2Strategy`，暂时还没了解
