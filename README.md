@@ -115,11 +115,7 @@ public AbstractJapStrategy(JapUserService japUserService, JapConfig japConfig, J
 
 两个实现类：`SessionJapUserStore`、`SsoJapUserStore`（严格说这个类是继承了SessionJapUserStore的）
 
-主要在`AbstractJapStrategy`。以`SessionJapUserStore`，存储的是japUser实例，用session来存放
-
-
-
-
+主要在`AbstractJapStrategy`。以`SessionJapUserStore`为例，存储的是japUser实例，用session来存放登录信息，
 
 
 
@@ -131,3 +127,46 @@ public AbstractJapStrategy(JapUserService japUserService, JapConfig japConfig, J
 
 1. `JapTokenHelper`，里面的方法们只需要两个参数，userId和token，也就是在这里japcache的用处是将userId作为key，token作为value。
 2. `OdicStrategy`和`OAuth2Strategy`，暂时还没了解
+
+
+
+接口`AuthStateCache`
+
+实现类`AuthDefaultStateCache`。
+
+
+
+**2021/7/22**
+
+[如何正确控制springboot中bean的加载顺序总结](https://blog.csdn.net/qianshangding0708/article/details/107373538)
+
+[条件注解 @ConditionalOnBean 的正确使用姿势](https://blog.csdn.net/forezp/article/details/84313907)，这种方式针对的是bean不在同一个@Configuration注解的类下
+
+
+
+
+
+**2021/7/23**
+
+实现了两种注入方式，以`socialStrategy`为例：
+
+```java
+@Autowired
+JapStrategyFactory japStrategyFactory;
+@Autowired
+JapProperties japProperties;
+@Autowired
+SocialStrategy socialStrategy;
+
+//方式一，这种方式采用了ServletRequestAttributes获取当前线程绑定的request和response。不是很确定，但应该没有线程安全问题。
+japStrategyFactory.authenticate(Strategy.SOCIAL);
+//方式二
+japStrategyFactory.authenticate(Strategy.SOCIAL, japProperties.getSocial(), request, response);
+//方式三
+socialStrategy.authenticate(japProperties.getSocial(), request, response);
+```
+
+
+
+
+

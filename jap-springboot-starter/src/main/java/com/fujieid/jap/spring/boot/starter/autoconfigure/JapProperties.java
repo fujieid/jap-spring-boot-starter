@@ -1,12 +1,12 @@
 package com.fujieid.jap.spring.boot.starter.autoconfigure;
 
+import com.fujieid.jap.core.JapUserService;
 import com.fujieid.jap.core.config.JapConfig;
 import com.fujieid.jap.oauth2.OAuthConfig;
 import com.fujieid.jap.oidc.OidcConfig;
 import com.fujieid.jap.simple.SimpleConfig;
 import com.fujieid.jap.social.SocialConfig;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 @ConfigurationProperties(prefix = "jap")
@@ -63,7 +63,7 @@ public class JapProperties extends JapConfig {
         return simpleUserService;
     }
 
-    public void setSimpleUserService(Class<?> simpleUserService) {
+    public <T extends JapUserService> void setSimpleUserService(Class<T> simpleUserService) {
         this.simpleUserService = simpleUserService;
     }
 
@@ -71,7 +71,7 @@ public class JapProperties extends JapConfig {
         return socialUserService;
     }
 
-    public void setSocialUserService(Class<?> socialUserService) {
+    public <T extends JapUserService> void setSocialUserService(Class<T> socialUserService) {
         this.socialUserService = socialUserService;
     }
 }

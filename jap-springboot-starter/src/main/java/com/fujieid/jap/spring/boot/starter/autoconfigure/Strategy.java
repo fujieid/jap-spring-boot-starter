@@ -7,10 +7,10 @@ import com.fujieid.jap.simple.SimpleStrategy;
 import com.fujieid.jap.social.SocialStrategy;
 
 public enum Strategy {
-    SIMPLE("simple", SimpleStrategy.class),
-    SOCIAL("social", SocialStrategy.class),
-    OAUTH2("oauth2", Oauth2Strategy.class),
-    OIDC("oidc", OidcStrategy.class)
+    SIMPLE("simpleStrategy", SimpleStrategy.class),
+    SOCIAL("socialStrategy", SocialStrategy.class),
+    OAUTH2("oauth2Strategy", Oauth2Strategy.class),
+    OIDC("oidcStrategy", OidcStrategy.class)
     ;
 
     private String strategyType;
@@ -44,5 +44,14 @@ public enum Strategy {
 
     public void setConfig(AuthenticateConfig config) {
         this.config = config;
+    }
+
+    @Override
+    public String toString() {
+        return "Strategy{" +
+                "strategyType='" + strategyType + '\'' +
+                ", strategy=" + strategy +
+                ", config=" + config +
+                '}';
     }
 }
