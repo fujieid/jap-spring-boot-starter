@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service(JapServiceType.SOCIAL)
-public class JapSocialUserServiceImpl implements JapUserService {
+public class SocialUserServiceImpl implements JapUserService {
     /**
      * 模拟 DB 操作
      */

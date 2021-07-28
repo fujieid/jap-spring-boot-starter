@@ -15,7 +15,7 @@ public enum Strategy {
 
     private String strategyType;
     private Class<?> strategy;
-    private AuthenticateConfig config;
+    private AuthenticateConfig authenticateConfig;
 
     Strategy(String strategyType, Class<?> strategy){
         this.strategyType=strategyType;
@@ -38,12 +38,12 @@ public enum Strategy {
         this.strategy = strategy;
     }
 
-    public AuthenticateConfig getConfig() {
-        return config;
+    public AuthenticateConfig getAuthenticateConfig() {
+        return authenticateConfig;
     }
 
-    public void setConfig(AuthenticateConfig config) {
-        this.config = config;
+    public void setAuthenticateConfig(AuthenticateConfig authenticateConfig) {
+        this.authenticateConfig = authenticateConfig;
     }
 
     @Override
@@ -51,7 +51,7 @@ public enum Strategy {
         return "Strategy{" +
                 "strategyType='" + strategyType + '\'' +
                 ", strategy=" + strategy +
-                ", config=" + config +
+                ", config=" + authenticateConfig +
                 '}';
     }
 }

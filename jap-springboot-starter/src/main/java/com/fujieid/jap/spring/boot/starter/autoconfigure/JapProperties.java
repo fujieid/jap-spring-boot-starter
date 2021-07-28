@@ -14,10 +14,6 @@ public class JapProperties extends JapConfig {
     @NestedConfigurationProperty
     private SimpleConfig simple = new SimpleConfig();
 
-    private Class<?> simpleUserService;
-
-    private Class<?> socialUserService;
-
     @NestedConfigurationProperty
     private SocialConfig social = new SocialConfig();
 
@@ -26,6 +22,14 @@ public class JapProperties extends JapConfig {
 
     @NestedConfigurationProperty
     private OidcConfig oidc = new OidcConfig();
+
+    private Class<?> simpleUserService;
+
+    private Class<?> socialUserService;
+
+    private Class<?> oauth2UserService;
+
+    private Class<?> oidcUserService;
 
     public SimpleConfig getSimple() {
         return simple;
@@ -73,5 +77,21 @@ public class JapProperties extends JapConfig {
 
     public <T extends JapUserService> void setSocialUserService(Class<T> socialUserService) {
         this.socialUserService = socialUserService;
+    }
+
+    public Class<?> getOauth2UserService() {
+        return oauth2UserService;
+    }
+
+    public <T extends JapUserService> void setOauth2UserService(Class<T> oauth2UserService) {
+        this.oauth2UserService = oauth2UserService;
+    }
+
+    public Class<?> getOidcUserService() {
+        return oidcUserService;
+    }
+
+    public <T extends JapUserService> void setOidcUserService(Class<T> oidcUserService) {
+        this.oidcUserService = oidcUserService;
     }
 }

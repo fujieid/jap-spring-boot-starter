@@ -16,7 +16,7 @@
 
 **2021/7/13**
 
-两种调用方式：
+三种调用方式：
 
 1. 传入不同的策略，`Strategy.SIMPLE`，得到相应的response，这样做是为了屏蔽掉编程创建`JapConfig`和`AuthenticateConfig`。
 
@@ -144,11 +144,11 @@ public AbstractJapStrategy(JapUserService japUserService, JapConfig japConfig, J
 
 
 
-
+[SpringMVC之RequestContextHolder分析](https://www.cnblogs.com/shuilangyizu/p/8621669.html)，讨论了request和response怎么和当前请求挂钩
 
 **2021/7/23**
 
-实现了两种注入方式，以`socialStrategy`为例：
+实现了三种注入方式，以`socialStrategy`为例：
 
 ```java
 @Autowired
@@ -165,6 +165,21 @@ japStrategyFactory.authenticate(Strategy.SOCIAL, japProperties.getSocial(), requ
 //方式三
 socialStrategy.authenticate(japProperties.getSocial(), request, response);
 ```
+
+
+
+**2021/7/28**
+
+- 完成了`Oauth2Strategy`和`OidcStrategy`的注入
+- 避免了创建4种strategy的时候没有指定JapUserService。如果strategy没有指定的JapUserService，则传入`DefaultJapUserService`为JapUserService的空实现。可以过后调用`JapStrategyFactory`的`authenticate(Strategy strategy,JapUserService japUserService)`方法传入japUserService。
+
+
+
+
+
+
+
+
 
 
 

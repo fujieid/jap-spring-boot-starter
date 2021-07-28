@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class JapSimpleUserServiceImpl implements JapUserService {
+public class SimpleUserServiceImpl implements JapUserService {
     /**
      * 模拟 DB 操作
      */
