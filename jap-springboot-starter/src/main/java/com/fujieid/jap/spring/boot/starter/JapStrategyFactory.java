@@ -30,7 +30,8 @@ public class JapStrategyFactory {
         this.applicationContext=applicationContext;
     }
     /**
-     * 获取当前线程绑定的request和response。不是特别确定，但应该是没有线程问题的。
+     *
+     * @param strategy {@code Strategy.SIMPLE}，{@code Strategy.SOCIAL}，{@code Strategy.OAUTH2}，{@code Strategy.OIDC}
      */
     public JapResponse authenticate(Strategy strategy) {
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
@@ -49,11 +50,12 @@ public class JapStrategyFactory {
     }
 
     /**
-     * 可以覆盖掉之前的JapUserService
-     * @param japUserService 新的japUserService，将原有的覆盖掉
+     * 重新指定相应策略类的japUserService实现类，并进行授权
+     * <br/>注意！会替换原有的JapUserStrategy实例。
+     * @param strategy @param strategy {@code Strategy.SIMPLE}，{@code Strategy.SOCIAL}，{@code Strategy.OAUTH2}，{@code Strategy.OIDC}
+     * @param japUserService 指定的japUserService实现类，会将相应策略类原有的覆盖japUserService对象替换
      */
-    public JapResponse authenticate(Strategy strategy,
-                                    JapUserService japUserService){
+    public JapResponse authenticate(Strategy strategy, JapUserService japUserService){
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (ObjectUtil.isNull(requestAttributes)) {
             return JapResponse.error(400, "当前请求（线程）不存在request上下文");
@@ -67,7 +69,7 @@ public class JapStrategyFactory {
         return authenticate(abstractJapStrategy, strategy.getAuthenticateConfig(), request,response);
     }
 
-    protected <T extends AuthenticateConfig> JapResponse authenticate(AbstractJapStrategy abstractJapStrategy, T authenticateConfig,
+    private <T extends AuthenticateConfig> JapResponse authenticate(AbstractJapStrategy abstractJapStrategy, T authenticateConfig,
                                                                       HttpServletRequest request, HttpServletResponse response) {
         if (ObjectUtil.isNull(abstractJapStrategy))
             return JapResponse.error(500,"no abstractJapStrategy in applicationContext correspond to specified Strategy: "+abstractJapStrategy);
@@ -95,12 +97,15 @@ public class JapStrategyFactory {
     }
 
     /**
-     * 重新设置strategy的userService实例
+     * 设置strategy的userService实例。若已经设置过，不允许重新设置。
      */
     private void setJapUserService(AbstractJapStrategy abstractJapStrategy,JapUserService japUserService){
         try {
             Field field = AbstractJapStrategy.class.getDeclaredField("japUserService");
             field.setAccessible(true);
+            Object o = field.get(abstractJapStrategy);
+            if (!(ObjectUtil.isNull(o))&&!(o instanceof DefaultJapUserService))
+                throw new Exception("当前strategy对象已指定JapUserService实现类");
             field.set(abstractJapStrategy,japUserService);
         } catch (Exception e) {
             e.printStackTrace();

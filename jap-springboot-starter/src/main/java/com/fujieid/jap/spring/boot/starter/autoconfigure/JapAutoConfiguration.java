@@ -56,7 +56,7 @@ public class JapAutoConfiguration {
             // TODO: 2021/7/23 cache是否添加支持自定义，不一定采用默认的？
             return new SimpleStrategy(simple, japProperties, new JapLocalCache());
         } catch (Exception e) {
-            logger.warn("没有指定simpleStrategy的JapUserService");
+            logger.warn("尚未指定simpleStrategy的JapUserService。若需采用该策略进行认证，请指定JapUserService实现类");
             return new SimpleStrategy(new DefaultJapUserService(),japProperties,new JapLocalCache());
         }
     }
@@ -70,7 +70,7 @@ public class JapAutoConfiguration {
                     (JapUserService) applicationContext.getBean(japProperties.getSocialUserService());
             return new SocialStrategy(social,japProperties, new JapLocalCache());
         } catch (Exception e){
-            logger.warn("没有指定socialStrategy的JapUserService");
+            logger.warn("尚未指定socialStrategy的JapUserService。若需采用该策略进行认证，请指定JapUserService实现类");
             return new SocialStrategy(new DefaultJapUserService(),japProperties,new JapLocalCache());
         }
     }
@@ -84,7 +84,7 @@ public class JapAutoConfiguration {
                     (JapUserService) applicationContext.getBean(japProperties.getOauth2UserService());
             return new Oauth2Strategy(oauth2,japProperties, new JapLocalCache());
         } catch (Exception e){
-            logger.warn("没有指定oauth2Strategy的JapUserService");
+            logger.warn("尚未指定oauth2Strategy的JapUserService。若需采用该策略进行认证，请指定JapUserService实现类");
             return new Oauth2Strategy(new DefaultJapUserService(),japProperties,new JapLocalCache());
         }
     }
@@ -98,10 +98,9 @@ public class JapAutoConfiguration {
                     (JapUserService) applicationContext.getBean(japProperties.getOidcUserService());
             return new OidcStrategy(oidc,japProperties, new JapLocalCache());
         } catch (Exception e){
-            logger.warn("没有指定oauth2Strategy的JapUserService");
+            logger.warn("尚未指定oauth2Strategy的JapUserService。若需采用该策略进行认证，请指定JapUserService实现类");
             return new OidcStrategy(new DefaultJapUserService(),japProperties,new JapLocalCache());
         }
-
     }
 
     // TODO: 2021/7/23 japCache是否需要支持自定义，比如加入redisTemplate

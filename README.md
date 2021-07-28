@@ -172,6 +172,11 @@ socialStrategy.authenticate(japProperties.getSocial(), request, response);
 
 - 完成了`Oauth2Strategy`和`OidcStrategy`的注入
 - 避免了创建4种strategy的时候没有指定JapUserService。如果strategy没有指定的JapUserService，则传入`DefaultJapUserService`为JapUserService的空实现。可以过后调用`JapStrategyFactory`的`authenticate(Strategy strategy,JapUserService japUserService)`方法传入japUserService。
+- 考虑公共的authenticate方法都不显式传递request和response。
+
+todo：
+
+考虑JapCache和JapStore继承redis，采用Jedis或Redission。
 
 
 
