@@ -1,7 +1,11 @@
 package com.fujieid.jap.spring.boot.starter.autoconfigure;
 
+import cn.hutool.core.util.ClassUtil;
+import cn.hutool.core.util.ObjectUtil;
+import com.fujieid.jap.core.JapUser;
 import com.fujieid.jap.core.JapUserService;
 import com.fujieid.jap.core.config.JapConfig;
+import com.fujieid.jap.core.exception.JapException;
 import com.fujieid.jap.oauth2.OAuthConfig;
 import com.fujieid.jap.oidc.OidcConfig;
 import com.fujieid.jap.simple.SimpleConfig;
@@ -67,7 +71,9 @@ public class JapProperties extends JapConfig {
         return simpleUserService;
     }
 
-    public <T extends JapUserService> void setSimpleUserService(Class<T> simpleUserService) {
+    public void setSimpleUserService(Class<?> simpleUserService) {
+        if(!ClassUtil.isAssignable(JapUserService.class, simpleUserService))
+            throw new JapException(simpleUserService.getName()+"应为接口JapUserService的实现类");
         this.simpleUserService = simpleUserService;
     }
 
@@ -75,7 +81,9 @@ public class JapProperties extends JapConfig {
         return socialUserService;
     }
 
-    public <T extends JapUserService> void setSocialUserService(Class<T> socialUserService) {
+    public void setSocialUserService(Class<?> socialUserService) {
+        if(!ClassUtil.isAssignable(JapUserService.class, socialUserService))
+            throw new JapException(socialUserService.getName()+"应为接口JapUserService的实现类");
         this.socialUserService = socialUserService;
     }
 
@@ -83,7 +91,9 @@ public class JapProperties extends JapConfig {
         return oauth2UserService;
     }
 
-    public <T extends JapUserService> void setOauth2UserService(Class<T> oauth2UserService) {
+    public void setOauth2UserService(Class<?> oauth2UserService) {
+        if(!ClassUtil.isAssignable(JapUserService.class, oauth2UserService))
+            throw new JapException(oauth2UserService.getName()+"应为接口JapUserService的实现类");
         this.oauth2UserService = oauth2UserService;
     }
 
@@ -91,7 +101,9 @@ public class JapProperties extends JapConfig {
         return oidcUserService;
     }
 
-    public <T extends JapUserService> void setOidcUserService(Class<T> oidcUserService) {
+    public void setOidcUserService(Class<?> oidcUserService) {
+        if(!ClassUtil.isAssignable(JapUserService.class, oidcUserService))
+            throw new JapException(oidcUserService.getName()+"应为接口JapUserService的实现类");
         this.oidcUserService = oidcUserService;
     }
 }

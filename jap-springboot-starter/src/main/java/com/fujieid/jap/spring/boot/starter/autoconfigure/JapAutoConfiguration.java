@@ -1,8 +1,10 @@
 package com.fujieid.jap.spring.boot.starter.autoconfigure;
 
+import cn.hutool.core.util.ClassUtil;
 import com.fujieid.jap.core.JapUserService;
 import com.fujieid.jap.core.cache.JapCache;
 import com.fujieid.jap.core.cache.JapLocalCache;
+import com.fujieid.jap.core.exception.JapException;
 import com.fujieid.jap.oauth2.Oauth2Strategy;
 import com.fujieid.jap.oidc.OidcStrategy;
 import com.fujieid.jap.simple.SimpleStrategy;
@@ -22,7 +24,7 @@ public class JapAutoConfiguration {
     private final Logger logger = LoggerFactory.getLogger(JapAutoConfiguration.class);
 
     /**
-     * 保证所有的strategy注入bean后才创建JapStrategyFactory实例
+     * 保证所有的strategy注入bean容器后才创建JapStrategyFactory实例
      * @return
      */
     @Bean
@@ -49,10 +51,7 @@ public class JapAutoConfiguration {
     public SimpleStrategy simpleStrategy(ApplicationContext applicationContext, JapProperties japProperties) {
         try {
             //两种方式指定JapUserService：@Service(JapServiceType.SOCIAL)；在application.properties中指定类全名
-            JapUserService simple = applicationContext.containsBean(JapServiceType.SIMPLE) ?
-                    (JapUserService) applicationContext.getBean(JapServiceType.SIMPLE) :
-                    (JapUserService) applicationContext.getBean(japProperties.getSimpleUserService());
-
+            JapUserService simple = getUserService(applicationContext,JapServiceType.SIMPLE,japProperties.getSimpleUserService());
             // TODO: 2021/7/23 cache是否添加支持自定义，不一定采用默认的？
             return new SimpleStrategy(simple, japProperties, new JapLocalCache());
         } catch (Exception e) {
@@ -65,9 +64,7 @@ public class JapAutoConfiguration {
     @ConditionalOnMissingBean
     public SocialStrategy socialStrategy(ApplicationContext applicationContext, JapProperties japProperties) {
         try {
-            JapUserService social = applicationContext.containsBean(JapServiceType.SOCIAL) ?
-                    (JapUserService) applicationContext.getBean(JapServiceType.SOCIAL) :
-                    (JapUserService) applicationContext.getBean(japProperties.getSocialUserService());
+            JapUserService social = getUserService(applicationContext,JapServiceType.SOCIAL,japProperties.getSocialUserService());
             return new SocialStrategy(social,japProperties, new JapLocalCache());
         } catch (Exception e){
             logger.warn("尚未指定socialStrategy的JapUserService。若需采用该策略进行认证，请指定JapUserService实现类");
@@ -79,9 +76,7 @@ public class JapAutoConfiguration {
     @ConditionalOnMissingBean
     public Oauth2Strategy oauth2Strategy(ApplicationContext applicationContext, JapProperties japProperties) {
         try{
-            JapUserService oauth2 = applicationContext.containsBean(JapServiceType.OAUTH2) ?
-                    (JapUserService) applicationContext.getBean(JapServiceType.OAUTH2) :
-                    (JapUserService) applicationContext.getBean(japProperties.getOauth2UserService());
+            JapUserService oauth2 = getUserService(applicationContext,JapServiceType.OAUTH2,japProperties.getOauth2UserService());
             return new Oauth2Strategy(oauth2,japProperties, new JapLocalCache());
         } catch (Exception e){
             logger.warn("尚未指定oauth2Strategy的JapUserService。若需采用该策略进行认证，请指定JapUserService实现类");
@@ -93,14 +88,21 @@ public class JapAutoConfiguration {
     @ConditionalOnMissingBean
     public OidcStrategy oidcStrategy(ApplicationContext applicationContext, JapProperties japProperties) {
         try{
-            JapUserService oidc = applicationContext.containsBean(JapServiceType.OIDC) ?
-                    (JapUserService) applicationContext.getBean(JapServiceType.OIDC) :
-                    (JapUserService) applicationContext.getBean(japProperties.getOidcUserService());
+            JapUserService oidc = getUserService(applicationContext,JapServiceType.OIDC,japProperties.getOidcUserService());
             return new OidcStrategy(oidc,japProperties, new JapLocalCache());
         } catch (Exception e){
             logger.warn("尚未指定oauth2Strategy的JapUserService。若需采用该策略进行认证，请指定JapUserService实现类");
             return new OidcStrategy(new DefaultJapUserService(),japProperties,new JapLocalCache());
         }
+    }
+
+    private JapUserService getUserService(ApplicationContext applicationContext, String japServiceType, Class<?> clazz){
+        if (!ClassUtil.isAssignable(JapUserService.class,clazz)) {
+            throw new JapException("Unsupported parameter type, please use " + ClassUtil.getClassName(JapUserService.class, true) + ", a subclass of AuthenticateConfig");
+        }
+        return applicationContext.containsBean(japServiceType) ?
+                (JapUserService) applicationContext.getBean(japServiceType) :
+                (JapUserService) applicationContext.getBean(clazz);
     }
 
     // TODO: 2021/7/23 japCache是否需要支持自定义，比如加入redisTemplate
