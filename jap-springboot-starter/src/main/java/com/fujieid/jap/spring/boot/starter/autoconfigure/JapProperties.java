@@ -10,6 +10,7 @@ import com.fujieid.jap.oauth2.OAuthConfig;
 import com.fujieid.jap.oidc.OidcConfig;
 import com.fujieid.jap.simple.SimpleConfig;
 import com.fujieid.jap.social.SocialConfig;
+import me.zhyd.oauth.config.AuthConfig;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
@@ -27,6 +28,12 @@ public class JapProperties extends JapConfig {
     @NestedConfigurationProperty
     private OidcConfig oidc = new OidcConfig();
 
+    @NestedConfigurationProperty
+    private AuthConfig auth = new AuthConfig();
+
+    @NestedConfigurationProperty
+    private CacheProperties cache;
+
     private Class<?> simpleUserService;
 
     private Class<?> socialUserService;
@@ -34,6 +41,22 @@ public class JapProperties extends JapConfig {
     private Class<?> oauth2UserService;
 
     private Class<?> oidcUserService;
+
+    public CacheProperties getCache() {
+        return cache;
+    }
+
+    public void setCache(CacheProperties cache) {
+        this.cache = cache;
+    }
+
+    public AuthConfig getAuth() {
+        return auth;
+    }
+
+    public void setAuth(AuthConfig auth) {
+        this.auth = auth;
+    }
 
     public SimpleConfig getSimple() {
         return simple;

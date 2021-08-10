@@ -69,11 +69,13 @@ public class JapStrategyFactory {
         return authenticate(abstractJapStrategy, strategy.getAuthenticateConfig(), request,response);
     }
 
-    private <T extends AuthenticateConfig> JapResponse authenticate(AbstractJapStrategy abstractJapStrategy, T authenticateConfig,
-                                                                      HttpServletRequest request, HttpServletResponse response) {
+    private <T extends AuthenticateConfig> JapResponse authenticate(AbstractJapStrategy abstractJapStrategy,
+                                                                    T authenticateConfig,
+                                                                    HttpServletRequest request, HttpServletResponse response) {
         if (ObjectUtil.isNull(abstractJapStrategy))
             return JapResponse.error(500,"no abstractJapStrategy in applicationContext correspond to specified Strategy: "+abstractJapStrategy);
 
+        // TODO: 2021/8/9 每次授权的时候都会检查是否有service，似乎这样会很慢
         try {
             Field field = AbstractJapStrategy.class.getDeclaredField("japUserService");
             field.setAccessible(true);

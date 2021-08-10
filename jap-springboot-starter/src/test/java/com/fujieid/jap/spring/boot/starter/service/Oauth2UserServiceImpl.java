@@ -4,7 +4,6 @@ import com.fujieid.jap.core.JapUser;
 import com.fujieid.jap.core.JapUserService;
 import com.fujieid.jap.oauth2.token.AccessToken;
 import com.fujieid.jap.spring.boot.starter.autoconfigure.JapServiceType;
-import com.fujieid.jap.spring.boot.starter.autoconfigure.Strategy;
 import com.xkcoding.json.JsonUtil;
 import org.assertj.core.util.Lists;
 import org.springframework.stereotype.Service;
