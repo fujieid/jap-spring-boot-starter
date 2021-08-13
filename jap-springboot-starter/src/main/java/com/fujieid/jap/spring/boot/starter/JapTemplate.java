@@ -14,6 +14,7 @@ import com.fujieid.jap.simple.SimpleStrategy;
 import com.fujieid.jap.social.SocialConfig;
 import com.fujieid.jap.social.SocialStrategy;
 import com.fujieid.jap.spring.boot.starter.autoconfigure.JapProperties;
+import me.zhyd.oauth.config.AuthConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -21,6 +22,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Field;
+import java.util.Map;
 
 public class JapTemplate {
     @Autowired
@@ -34,6 +36,8 @@ public class JapTemplate {
     @Autowired
     private OidcStrategy oidcStrategy;
 
+
+    // TODO: 2021/8/13 是否需要支持传入JapUserService参数?
     public JapResponse simple(){
         SimpleConfig simpleConfig = japProperties.getSimple();
         return authenticate(simpleStrategy,simpleConfig);

@@ -6,6 +6,10 @@ import me.zhyd.oauth.cache.AuthStateCache;
 import org.springframework.data.redis.core.RedisTemplate;
 
 // TODO: 2021/8/13
+
+/**
+ * 这是用于social的存储
+ */
 public class RedisAuthStateCache implements AuthStateCache {
     private RedisTemplate<String, String> redisTemplate;
     private CacheProperties cacheProperties;

@@ -1,14 +1,15 @@
 package com.fujieid.jap.spring.boot.starter.autoconfigure;
 
-import cn.hutool.core.util.ClassUtil;
-import com.fujieid.jap.core.cache.JapCache;
-import com.fujieid.jap.core.exception.JapException;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.Duration;
 
 /**
  * 缓存配置类
  */
+@Getter
+@Setter
 public class CacheProperties {
     /**
      * 缓存类型
@@ -48,57 +49,5 @@ public class CacheProperties {
          * 自定义缓存，若采用，需实现{@link com.fujieid.jap.core.cache.JapCache}接口并配置
          */
         CUSTOM
-    }
-
-
-    public CacheType getType() {
-        return type;
-    }
-
-    public void setType(CacheType type) {
-        this.type = type;
-    }
-
-    public String getCachePrefix() {
-        return cachePrefix;
-    }
-
-    public void setCachePrefix(String cachePrefix) {
-        this.cachePrefix = cachePrefix;
-    }
-
-    public Duration getTimeout() {
-        return timeout;
-    }
-
-    public void setTimeout(Duration timeout) {
-        this.timeout = timeout;
-    }
-
-    public Class<?> getCustomClass() {
-        return customClass;
-    }
-
-    public void setCustomClass(Class<?> customClass) {
-        if (!ClassUtil.isAssignable(JapCache.class,customClass)){
-            throw new JapException(customClass.getName()+"应为接口JapCache的实现类");
-        }
-        this.customClass = customClass;
-    }
-
-    public String getAuthStatePrefix() {
-        return authStatePrefix;
-    }
-
-    public void setAuthStatePrefix(String authStatePrefix) {
-        this.authStatePrefix = authStatePrefix;
-    }
-
-    public String getUserStorePrefix() {
-        return userStorePrefix;
-    }
-
-    public void setUserStorePrefix(String userStorePrefix) {
-        this.userStorePrefix = userStorePrefix;
     }
 }

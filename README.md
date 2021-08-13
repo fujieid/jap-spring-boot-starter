@@ -188,7 +188,7 @@ todo：
 
 **2021/8/13**
 
-重新封装了`JapTemplate`，现在的API调用方式为：
+重新封装了`JapTemplate`，将调用方式更加简化：
 
 ```java
 @Autowired
@@ -199,7 +199,7 @@ SimpleStrategy simpleStrategy;
 JapTemplate japTemplate;
 ```
 
-方式一：直接传入平台
+方式一：传入平台名称即可
 
 ```java
 JapResponse japResponse = japTemplate.social("gitee");
@@ -208,7 +208,8 @@ JapResponse japResponse = japTemplate.social("gitee");
 方式二：
 
 ```java
-JapResponse japResponse = socialStrategy.authenticate(japProperties.getSocial().get("gitee"), request, response);
+JapResponse japResponse = 
+    socialStrategy.authenticate(japProperties.getSocial().get("gitee"), request, response);
 ```
 
 properties配置文件的用例如下：
@@ -248,11 +249,7 @@ jap.oauth.gitee.grant-type=authorization_code
 jap.oauth.gitee.response-type=code
 ```
 
-
-
-
-
-
+一个大问题：redis有并发控制吗？？？？
 
 
 

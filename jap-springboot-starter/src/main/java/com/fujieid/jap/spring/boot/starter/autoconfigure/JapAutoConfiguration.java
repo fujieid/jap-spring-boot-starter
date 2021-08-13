@@ -10,9 +10,8 @@ import com.fujieid.jap.oidc.OidcStrategy;
 import com.fujieid.jap.simple.SimpleStrategy;
 import com.fujieid.jap.social.SocialStrategy;
 import com.fujieid.jap.spring.boot.starter.JapTemplate;
+import lombok.extern.slf4j.Slf4j;
 import me.zhyd.oauth.cache.AuthStateCache;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
@@ -23,8 +22,8 @@ import java.lang.reflect.Field;
 
 @Configuration
 @EnableConfigurationProperties(value = {JapProperties.class})
+@Slf4j
 public class JapAutoConfiguration {
-    private final Logger logger = LoggerFactory.getLogger(JapAutoConfiguration.class);
 
     /**
      * 保证所有的strategy注入bean容器后才创建JapStrategyFactory实例
@@ -51,7 +50,7 @@ public class JapAutoConfiguration {
             JapUserService simple = getUserService(applicationContext, JapUserServiceType.SIMPLE,japProperties.getSimpleUserService());
             return new SimpleStrategy(simple, japProperties.getBasic(), japCache);
         } catch (Exception e) {
-            logger.warn("尚未指定simpleStrategy的JapUserService。若需采用该策略进行认证，请指定JapUserService实现类");
+            log.warn("尚未指定simpleStrategy的JapUserService。若需采用该策略进行认证，请指定JapUserService实现类");
             return new SimpleStrategy(null,japProperties.getBasic(),japCache);
         }
     }
@@ -72,7 +71,7 @@ public class JapAutoConfiguration {
 
             return socialStrategy;
         } catch (Exception e){
-            logger.warn("尚未指定socialStrategy的JapUserService。若需采用该策略进行认证，请指定JapUserService实现类");
+            log.warn("尚未指定socialStrategy的JapUserService。若需采用该策略进行认证，请指定JapUserService实现类");
             return new SocialStrategy(null,japProperties.getBasic(),japCache);
         }
     }
@@ -86,7 +85,7 @@ public class JapAutoConfiguration {
             JapUserService oauth2 = getUserService(applicationContext, JapUserServiceType.OAUTH2,japProperties.getOauth2UserService());
             return new Oauth2Strategy(oauth2, japProperties.getBasic(), japCache);
         } catch (Exception e){
-            logger.warn("尚未指定oauth2Strategy的JapUserService。若需采用该策略进行认证，请指定JapUserService实现类");
+            log.warn("尚未指定oauth2Strategy的JapUserService。若需采用该策略进行认证，请指定JapUserService实现类");
             return new Oauth2Strategy(null, japProperties.getBasic(), japCache);
         }
     }
@@ -100,7 +99,7 @@ public class JapAutoConfiguration {
             JapUserService oidc = getUserService(applicationContext, JapUserServiceType.OIDC,japProperties.getOidcUserService());
             return new OidcStrategy(oidc,japProperties.getBasic(), japCache);
         } catch (Exception e){
-            logger.warn("尚未指定oidcStrategy的JapUserService。若需采用该策略进行认证，请指定JapUserService实现类");
+            log.warn("尚未指定oidcStrategy的JapUserService。若需采用该策略进行认证，请指定JapUserService实现类");
             return new OidcStrategy(null, japProperties.getBasic(), japCache);
         }
     }

@@ -9,6 +9,10 @@ import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
 // TODO: 2021/8/13 是否需要考虑线程安全？是否需要加锁?
+
+/**
+ * 这是存token的接口实现
+ */
 public class RedisJapCache implements JapCache {
     private final RedisTemplate<String,Serializable> redisTemplate;
     private final CacheProperties cacheProperties;

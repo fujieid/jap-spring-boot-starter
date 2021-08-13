@@ -1,4 +1,4 @@
-package com.fujieid.jap.spring.boot.starter;
+package com.fujieid.jap.spring.boot.starter.config;
 
 import com.fujieid.jap.core.cache.JapCache;
 

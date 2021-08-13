@@ -61,5 +61,4 @@ public class JapCacheAutoConfiguration {
         return new SessionJapUserStore();
     }
 
-
 }
