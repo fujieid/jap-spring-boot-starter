@@ -2,15 +2,14 @@ package com.fujieid.jap.spring.boot.starter.service;
 
 import com.fujieid.jap.core.JapUser;
 import com.fujieid.jap.core.JapUserService;
-import com.fujieid.jap.spring.boot.starter.autoconfigure.JapServiceType;
-import com.fujieid.jap.spring.boot.starter.autoconfigure.Strategy;
+import com.fujieid.jap.spring.boot.starter.autoconfigure.JapUserServiceType;
 import me.zhyd.oauth.model.AuthUser;
 import org.assertj.core.util.Lists;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service(JapServiceType.SOCIAL)
+@Service(JapUserServiceType.SOCIAL)
 public class SocialUserServiceImpl implements JapUserService {
     /**
      * 模拟 DB 操作

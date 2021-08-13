@@ -3,7 +3,7 @@ package com.fujieid.jap.spring.boot.starter.service;
 import com.fujieid.jap.core.JapUser;
 import com.fujieid.jap.core.JapUserService;
 import com.fujieid.jap.oauth2.token.AccessToken;
-import com.fujieid.jap.spring.boot.starter.autoconfigure.JapServiceType;
+import com.fujieid.jap.spring.boot.starter.autoconfigure.JapUserServiceType;
 import com.xkcoding.json.JsonUtil;
 import org.assertj.core.util.Lists;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
-@Service(JapServiceType.OAUTH2)
+@Service(JapUserServiceType.OAUTH2)
 public class Oauth2UserServiceImpl implements JapUserService {
     /**
      * 模拟 DB 操作

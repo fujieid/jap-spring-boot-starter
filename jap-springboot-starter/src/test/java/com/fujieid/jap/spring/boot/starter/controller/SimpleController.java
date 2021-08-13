@@ -2,9 +2,8 @@ package com.fujieid.jap.spring.boot.starter.controller;
 
 import com.fujieid.jap.core.result.JapResponse;
 import com.fujieid.jap.simple.SimpleStrategy;
-import com.fujieid.jap.spring.boot.starter.JapStrategyFactory;
+import com.fujieid.jap.spring.boot.starter.JapTemplate;
 import com.fujieid.jap.spring.boot.starter.autoconfigure.JapProperties;
-import com.fujieid.jap.spring.boot.starter.autoconfigure.Strategy;
 import com.fujieid.jap.spring.boot.starter.service.SimpleUserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,9 +21,7 @@ public class SimpleController {
     @Autowired
     SimpleStrategy simpleStrategy;
     @Autowired
-    JapStrategyFactory japStrategyFactory;
-    @Autowired
-    SimpleUserServiceImpl simpleUserService;
+    JapTemplate japTemplate;
 
     @RequestMapping(method = RequestMethod.GET, path = "/1")
     public JapResponse simple(HttpServletRequest request, HttpServletResponse response) {
@@ -33,7 +30,7 @@ public class SimpleController {
 
     @RequestMapping(method = RequestMethod.GET, path = "/2")
     public JapResponse simple1(HttpServletRequest request, HttpServletResponse response) {
-        return japStrategyFactory.authenticate(Strategy.SIMPLE,simpleUserService);
+        return japTemplate.simple();
     }
 
 }

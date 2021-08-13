@@ -4,7 +4,7 @@ import com.fujieid.jap.core.cache.JapCache;
 
 import java.io.Serializable;
 
-public class CustomJapCache implements JapCache {
+public class MyJapCache implements JapCache {
     @Override
     public void set(String key, Serializable value) {
 

@@ -3,14 +3,13 @@ package com.fujieid.jap.spring.boot.starter.service;
 import cn.hutool.core.lang.UUID;
 import com.fujieid.jap.core.JapUser;
 import com.fujieid.jap.core.JapUserService;
-import com.fujieid.jap.spring.boot.starter.autoconfigure.JapServiceType;
-import com.fujieid.jap.spring.boot.starter.autoconfigure.Strategy;
+import com.fujieid.jap.spring.boot.starter.autoconfigure.JapUserServiceType;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Service(JapServiceType.SIMPLE)
+@Service(JapUserServiceType.SIMPLE)
 public class SimpleUserServiceImpl implements JapUserService {
     /**
      * 模拟 DB 操作

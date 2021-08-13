@@ -8,6 +8,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
+// TODO: 2021/8/13 是否需要考虑线程安全？是否需要加锁?
 public class RedisJapCache implements JapCache {
     private final RedisTemplate<String,Serializable> redisTemplate;
     private final CacheProperties cacheProperties;
@@ -19,7 +20,7 @@ public class RedisJapCache implements JapCache {
 
     @Override
     public void set(String key, Serializable value) {
-        redisTemplate.opsForValue().set(cacheProperties.getPrefix()+key,value,cacheProperties.getTimeout());
+        redisTemplate.opsForValue().set(cacheProperties.getCachePrefix()+key,value,cacheProperties.getTimeout());
     }
 
     /**
@@ -30,17 +31,17 @@ public class RedisJapCache implements JapCache {
      */
     @Override
     public void set(String key, Serializable value, long timeout) {
-        redisTemplate.opsForValue().set(cacheProperties.getPrefix()+key, value,timeout, TimeUnit.MILLISECONDS);
+        redisTemplate.opsForValue().set(cacheProperties.getCachePrefix()+key, value,timeout, TimeUnit.MILLISECONDS);
     }
 
     @Override
     public Serializable get(String key) {
-        return redisTemplate.opsForValue().get(cacheProperties.getPrefix()+key);
+        return redisTemplate.opsForValue().get(cacheProperties.getCachePrefix()+key);
     }
 
     @Override
     public boolean containsKey(String key) {
-        Long expire = redisTemplate.getExpire(cacheProperties.getPrefix() + key, TimeUnit.MILLISECONDS);//单位 毫秒
+        Long expire = redisTemplate.getExpire(cacheProperties.getCachePrefix() + key, TimeUnit.MILLISECONDS);//单位 毫秒
         if (ObjectUtil.isNull(expire))
             expire=0L;
         return expire>0;

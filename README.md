@@ -132,7 +132,7 @@ public AbstractJapStrategy(JapUserService japUserService, JapConfig japConfig, J
 
 接口`AuthStateCache`
 
-实现类`AuthDefaultStateCache`。
+实现类`AuthDefaultStateCache`。应该是用在social上的。
 
 
 
@@ -180,7 +180,73 @@ todo：
 
 
 
+**2021/8/10**
 
+实现了`JapCache`接口的redis实现，但是还没有测试oauth2策略。目前找到关于这种策略的授权过程的文章：[OAuth 2.0 的四种方式](https://www.ruanyifeng.com/blog/2019/04/oauth-grant-types.html)。
+
+
+
+**2021/8/13**
+
+重新封装了`JapTemplate`，现在的API调用方式为：
+
+```java
+@Autowired
+JapProperties japProperties;
+@Autowired
+SimpleStrategy simpleStrategy;
+@Autowired
+JapTemplate japTemplate;
+```
+
+方式一：直接传入平台
+
+```java
+JapResponse japResponse = japTemplate.social("gitee");
+```
+
+方式二：
+
+```java
+JapResponse japResponse = socialStrategy.authenticate(japProperties.getSocial().get("gitee"), request, response);
+```
+
+properties配置文件的用例如下：
+
+```properties
+# basic 基本配置
+jap.basic.sso=true
+jap.basic.cache-expire-time=13
+jap.basic.token-expire-time=12
+
+# sso
+jap.sso.cookie-domain=123
+jap.sso.cookie-max-age=312321
+jap.sso.cookie-name=3123124
+
+# social
+# gitee
+jap.social.gitee.platform=gitee
+jap.social.gitee.state=3242vregv
+jap.social.gitee.just-auth-config.client-id=fda07d40917d6f040822d3fa01c8c75588c67d63132c3ddc5c66990342115ba9
+jap.social.gitee.just-auth-config.client-secret=016f88fbff2d178263c4060c46168f4937153120a310adc21980e7838b76e833
+jap.social.gitee.just-auth-config.redirect-uri=https://sso.jap.com:8443/social/login/gitee
+# github
+jap.social.github.platform=github
+jap.social.github.state=xxxx
+
+# oauth
+# gitee
+jap.oauth.gitee.platform=gitee
+jap.oauth.gitee.client-id=e9b4f19402d2cwcb3375f5bfffe071d6b4nwa65dc4baa70a7ab752
+jap.oauth.gitee.client-secret=83brd48fc1we4e6222f229nub57d60f346a24976b48a752b794
+jap.oauth.gitee.callback-url=https://gitee.com/login
+jap.oauth.gitee.token-url=http://127.0.0.1:8080/oauth/token
+jap.oauth.gitee.userinfo-url=http://127.0.0.1:8080/oauth/userInfo
+jap.oauth.gitee.authorization-url=https://gitee.com/oauth/authorize
+jap.oauth.gitee.grant-type=authorization_code
+jap.oauth.gitee.response-type=code
+```
 
 
 

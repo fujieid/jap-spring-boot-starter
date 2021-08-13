@@ -23,7 +23,11 @@ public class CacheProperties {
     /**
      * 缓存前缀，目前只对redis缓存生效，默认 JAP::CACHE::
      */
-    private String prefix = "JAP::CACHE::";
+    private String cachePrefix = "JAP::CACHE::";
+
+    private String authStatePrefix = "JAP::AUTHSTATE::";
+
+    private String userStorePrefix = "JAP::USERSTORE::";
 
     /**
      * 超时时长，目前只对redis缓存生效，默认3分钟
@@ -55,12 +59,12 @@ public class CacheProperties {
         this.type = type;
     }
 
-    public String getPrefix() {
-        return prefix;
+    public String getCachePrefix() {
+        return cachePrefix;
     }
 
-    public void setPrefix(String prefix) {
-        this.prefix = prefix;
+    public void setCachePrefix(String cachePrefix) {
+        this.cachePrefix = cachePrefix;
     }
 
     public Duration getTimeout() {
@@ -80,5 +84,21 @@ public class CacheProperties {
             throw new JapException(customClass.getName()+"应为接口JapCache的实现类");
         }
         this.customClass = customClass;
+    }
+
+    public String getAuthStatePrefix() {
+        return authStatePrefix;
+    }
+
+    public void setAuthStatePrefix(String authStatePrefix) {
+        this.authStatePrefix = authStatePrefix;
+    }
+
+    public String getUserStorePrefix() {
+        return userStorePrefix;
+    }
+
+    public void setUserStorePrefix(String userStorePrefix) {
+        this.userStorePrefix = userStorePrefix;
     }
 }
