@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.fujieid.jap.spring.boot</groupId>
-    <artifactId>jap-springboot-starter</artifactId>
+    <artifactId>jap-spring-boot-starter</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>jap-springboot-starter</name>
+    <name>jap-spring-boot-starter</name>
     <description>JustAuthPlus Spring Boot Starter</description>
     <properties>
         <java.version>11</java.version>
@@ -43,22 +43,22 @@
         <dependency>
             <groupId>com.fujieid</groupId>
             <artifactId>jap-simple</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.4</version>
         </dependency>
         <dependency>
             <groupId>com.fujieid</groupId>
             <artifactId>jap-social</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.4</version>
         </dependency>
         <dependency>
             <groupId>com.fujieid</groupId>
             <artifactId>jap-oauth2</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.4</version>
         </dependency>
         <dependency>
             <groupId>com.fujieid</groupId>
             <artifactId>jap-oidc</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.4</version>
         </dependency>
 
         <dependency>

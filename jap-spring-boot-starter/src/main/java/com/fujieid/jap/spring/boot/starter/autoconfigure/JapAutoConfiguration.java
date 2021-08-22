@@ -63,13 +63,8 @@ public class JapAutoConfiguration {
                                          AuthStateCache authStateCache) {
         try {
             JapUserService social = getUserService(applicationContext, JapUserServiceType.SOCIAL, japProperties.getSocialUserService());
-            SocialStrategy socialStrategy = new SocialStrategy(social, japProperties.getBasic(), japCache);
-            //通过反射注入cache
-            Field stateCacheFiled = SocialStrategy.class.getDeclaredField("authStateCache");
-            stateCacheFiled.setAccessible(true);
-            stateCacheFiled.set(socialStrategy, authStateCache);
 
-            return socialStrategy;
+            return new SocialStrategy(social, japProperties.getBasic(), japCache,authStateCache);
         } catch (Exception e){
             log.warn("尚未指定socialStrategy的JapUserService。若需采用该策略进行认证，请指定JapUserService实现类");
             return new SocialStrategy(null,japProperties.getBasic(),japCache);
@@ -108,9 +103,9 @@ public class JapAutoConfiguration {
      * 提供两种方式获得JapUserService：application.properties中配置service的binary name;
      * <br/>service实现类上注解@Service，并指定名称如{@code JapServiceType.SIMPLE}。
      * <br/>第一种方式优先级高
-     * @param applicationContext
-     * @param japServiceType
-     * @param clazz
+     * @param applicationContext applicationContext
+     * @param japServiceType application.properties中配置的service的binary name，也即包全名
+     * @param clazz service的class对象
      * @return
      */
     private JapUserService getUserService(ApplicationContext applicationContext,

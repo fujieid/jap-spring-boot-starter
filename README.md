@@ -251,5 +251,11 @@ jap.oauth.gitee.response-type=code
 
 一个大问题：redis有并发控制吗？？？？
 
+**2021/8/22**
 
+是否需要提供显式传入service的方法，比如这样：
+
+```java
+japtemplate.simple(simpleservice);
+```
 

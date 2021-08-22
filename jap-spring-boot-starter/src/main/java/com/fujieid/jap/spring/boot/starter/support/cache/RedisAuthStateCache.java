@@ -1,7 +1,6 @@
 package com.fujieid.jap.spring.boot.starter.support.cache;
 
 import com.fujieid.jap.spring.boot.starter.autoconfigure.CacheProperties;
-import com.fujieid.jap.spring.boot.starter.autoconfigure.JapProperties;
 import me.zhyd.oauth.cache.AuthStateCache;
 import org.springframework.data.redis.core.RedisTemplate;
 
