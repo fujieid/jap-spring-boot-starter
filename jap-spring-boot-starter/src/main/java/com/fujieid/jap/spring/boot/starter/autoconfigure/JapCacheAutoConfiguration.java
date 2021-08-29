@@ -1,14 +1,10 @@
 package com.fujieid.jap.spring.boot.starter.autoconfigure;
 
-import com.fujieid.jap.core.cache.JapCache;
-import com.fujieid.jap.core.cache.JapLocalCache;
 import com.fujieid.jap.core.store.JapUserStore;
 import com.fujieid.jap.core.store.SessionJapUserStore;
 import com.fujieid.jap.spring.boot.starter.support.cache.RedisAuthStateCache;
-import com.fujieid.jap.spring.boot.starter.support.cache.RedisJapCache;
 import me.zhyd.oauth.cache.AuthDefaultStateCache;
 import me.zhyd.oauth.cache.AuthStateCache;
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,20 +27,7 @@ public class JapCacheAutoConfiguration {
         return redisTemplate;
     }
 
-    @Bean
-    public JapCache japCache(JapProperties japProperties,
-                             BeanFactory beanFactory,
-                             RedisTemplate<String, Serializable> redisTemplate){
-        JapCache japCache = new JapLocalCache();
-        CacheProperties.CacheType type = japProperties.getCache().getType();
 
-        if (type.equals(CacheProperties.CacheType.REDIS)) japCache = new RedisJapCache(redisTemplate,japProperties.getCache());
-        else if (type.equals(CacheProperties.CacheType.CUSTOM)) {
-            // TODO: 2021/8/9 实现自定义cache
-//            ((DefaultListableBeanFactory)beanFactory).registerSingleton("customJapCache",);
-        }
-        return japCache;
-    }
 
     // TODO: 2021/8/13 有两种策略，下面这种，或采用justauth-spring-boot-starter中的实现和配置
     @Bean

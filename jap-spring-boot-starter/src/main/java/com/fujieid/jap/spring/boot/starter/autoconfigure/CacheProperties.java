@@ -14,6 +14,8 @@ public class CacheProperties {
     /**
      * 缓存类型
      */
+    // TODO: 2021/8/22 三个缓存接口JapUserStore、JapCache、AuthStateCache，如果引入了redis，
+    //  那么它们全部都采用redis作为缓存，还是通过配置文件单独确定各自的缓存类型？
     private CacheType type = CacheType.DEFAULT;
 
     /**

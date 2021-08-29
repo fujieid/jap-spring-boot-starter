@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.fujieid.spring.boot.japoauth2springbootstarter.autoconfigure.Oauth2AutoConfiguration

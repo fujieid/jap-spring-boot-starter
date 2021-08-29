@@ -1,8 +1,8 @@
 package com.fujieid.jap.spring.boot.starter;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.fujieid.jap.core.JapUserService;
 import com.fujieid.jap.core.config.AuthenticateConfig;
+import com.fujieid.jap.core.exception.JapException;
 import com.fujieid.jap.core.result.JapResponse;
 import com.fujieid.jap.core.strategy.AbstractJapStrategy;
 import com.fujieid.jap.oauth2.OAuthConfig;
@@ -14,33 +14,38 @@ import com.fujieid.jap.simple.SimpleStrategy;
 import com.fujieid.jap.social.SocialConfig;
 import com.fujieid.jap.social.SocialStrategy;
 import com.fujieid.jap.spring.boot.starter.autoconfigure.JapProperties;
-import me.zhyd.oauth.config.AuthConfig;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.lang.reflect.Field;
-import java.util.Map;
 
+@Getter
+@Setter
+@Slf4j
 public class JapTemplate {
     @Autowired
+    private ApplicationContext applicationContext;
+    @Autowired
     private JapProperties japProperties;
-    @Autowired
+
     private SimpleStrategy simpleStrategy;
-    @Autowired
     private SocialStrategy socialStrategy;
-    @Autowired
     private Oauth2Strategy oauth2Strategy;
-    @Autowired
     private OidcStrategy oidcStrategy;
+
 
 
     // TODO: 2021/8/13 是否需要支持传入JapUserService参数?
     public JapResponse simple(){
         SimpleConfig simpleConfig = japProperties.getSimple();
-        return authenticate(simpleStrategy,simpleConfig);
+        return authenticate(this.simpleStrategy,simpleConfig);
     }
 
     public JapResponse social(String platform){
@@ -75,6 +80,16 @@ public class JapTemplate {
         if (ObjectUtil.isNull(abstractJapStrategy))
             return JapResponse.error(500,"no abstractJapStrategy in applicationContext correspond to specified Strategy: "+abstractJapStrategy);
         return abstractJapStrategy.authenticate(authenticateConfig, request, response);
+    }
+
+
+    private <T> T getBean(ApplicationContext applicationContext,Class<T> clazz){
+        try {
+            return applicationContext.getBean(clazz);
+        } catch (Exception e){
+            throw new JapException("no bean named"+clazz.getSimpleName()+"found in application context");
+        }
+
     }
 
 }

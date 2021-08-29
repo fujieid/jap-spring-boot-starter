@@ -20,7 +20,6 @@ public class RedisAuthStateCache implements AuthStateCache {
     }
 
     @Override
-
     public void cache(String key, String value) {
 
     }

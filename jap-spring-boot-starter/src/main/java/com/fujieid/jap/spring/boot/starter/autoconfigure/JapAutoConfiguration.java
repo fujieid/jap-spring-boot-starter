@@ -1,15 +1,12 @@
 package com.fujieid.jap.spring.boot.starter.autoconfigure;
 
-import cn.hutool.core.util.ClassUtil;
-import cn.hutool.core.util.ObjectUtil;
 import com.fujieid.jap.core.JapUserService;
 import com.fujieid.jap.core.cache.JapCache;
-import com.fujieid.jap.core.exception.JapException;
 import com.fujieid.jap.oauth2.Oauth2Strategy;
 import com.fujieid.jap.oidc.OidcStrategy;
-import com.fujieid.jap.simple.SimpleStrategy;
 import com.fujieid.jap.social.SocialStrategy;
 import com.fujieid.jap.spring.boot.starter.JapTemplate;
+import com.fujieid.jap.spring.boot.starter.support.util.JapUtil;
 import lombok.extern.slf4j.Slf4j;
 import me.zhyd.oauth.cache.AuthStateCache;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -17,8 +14,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.lang.reflect.Field;
 
 @Configuration
 @EnableConfigurationProperties(value = {JapProperties.class})
@@ -31,90 +26,10 @@ public class JapAutoConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    public JapTemplate japStrategyFactory(JapProperties japProperties,
-                                          ApplicationContext applicationContext,
-                                          SimpleStrategy simpleStrategy,
-                                          SocialStrategy socialStrategy,
-                                          Oauth2Strategy oauth2Strategy,
-                                          OidcStrategy oidcStrategy){
+    public JapTemplate japTemplate(JapProperties japProperties,
+                                   ApplicationContext applicationContext){
+        // TODO: 2021/8/29 需要模块化的方式引入每一个strategy，那么这里的代码就需要改变，
+        //  不用等到所有的strategy都注入了才引用，而只需要japProperties和applicationContext
         return new JapTemplate();
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public SimpleStrategy simpleStrategy(ApplicationContext applicationContext,
-                                         JapProperties japProperties,
-                                         JapCache japCache) {
-        try {
-            //两种方式指定JapUserService：@Service(JapServiceType.SOCIAL)；在application.properties中指定类全名
-            JapUserService simple = getUserService(applicationContext, JapUserServiceType.SIMPLE,japProperties.getSimpleUserService());
-            return new SimpleStrategy(simple, japProperties.getBasic(), japCache);
-        } catch (Exception e) {
-            log.warn("尚未指定simpleStrategy的JapUserService。若需采用该策略进行认证，请指定JapUserService实现类");
-            return new SimpleStrategy(null,japProperties.getBasic(),japCache);
-        }
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public SocialStrategy socialStrategy(ApplicationContext applicationContext,
-                                         JapProperties japProperties,
-                                         JapCache japCache,
-                                         AuthStateCache authStateCache) {
-        try {
-            JapUserService social = getUserService(applicationContext, JapUserServiceType.SOCIAL, japProperties.getSocialUserService());
-
-            return new SocialStrategy(social, japProperties.getBasic(), japCache,authStateCache);
-        } catch (Exception e){
-            log.warn("尚未指定socialStrategy的JapUserService。若需采用该策略进行认证，请指定JapUserService实现类");
-            return new SocialStrategy(null,japProperties.getBasic(),japCache);
-        }
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public Oauth2Strategy oauth2Strategy(ApplicationContext applicationContext,
-                                         JapProperties japProperties,
-                                         JapCache japCache) {
-        try{
-            JapUserService oauth2 = getUserService(applicationContext, JapUserServiceType.OAUTH2,japProperties.getOauth2UserService());
-            return new Oauth2Strategy(oauth2, japProperties.getBasic(), japCache);
-        } catch (Exception e){
-            log.warn("尚未指定oauth2Strategy的JapUserService。若需采用该策略进行认证，请指定JapUserService实现类");
-            return new Oauth2Strategy(null, japProperties.getBasic(), japCache);
-        }
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public OidcStrategy oidcStrategy(ApplicationContext applicationContext,
-                                     JapProperties japProperties,
-                                     JapCache japCache) {
-        try{
-            JapUserService oidc = getUserService(applicationContext, JapUserServiceType.OIDC,japProperties.getOidcUserService());
-            return new OidcStrategy(oidc,japProperties.getBasic(), japCache);
-        } catch (Exception e){
-            log.warn("尚未指定oidcStrategy的JapUserService。若需采用该策略进行认证，请指定JapUserService实现类");
-            return new OidcStrategy(null, japProperties.getBasic(), japCache);
-        }
-    }
-
-    /**
-     * 提供两种方式获得JapUserService：application.properties中配置service的binary name;
-     * <br/>service实现类上注解@Service，并指定名称如{@code JapServiceType.SIMPLE}。
-     * <br/>第一种方式优先级高
-     * @param applicationContext applicationContext
-     * @param japServiceType application.properties中配置的service的binary name，也即包全名
-     * @param clazz service的class对象
-     * @return
-     */
-    private JapUserService getUserService(ApplicationContext applicationContext,
-                                          String japServiceType, Class<?> clazz){
-        if (!ObjectUtil.isNull(clazz) && !ClassUtil.isAssignable(JapUserService.class,clazz)) {
-            throw new JapException("Unsupported parameter type, please use " + ClassUtil.getClassName(JapUserService.class, true) + ", an implement of JapUserService");
-        }
-        return applicationContext.containsBean(japServiceType) ?
-                (JapUserService) applicationContext.getBean(japServiceType) :
-                (JapUserService) applicationContext.getBean(clazz);
     }
 }

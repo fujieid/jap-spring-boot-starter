@@ -1,15 +1,11 @@
 package com.fujieid.jap.spring.boot.starter;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Arrays;
-
-@SpringBootApplication
+@SpringBootTest
 class JapSpringBootStarterTest {
 
-    public static void main(String[] args) {
-        SpringApplication.run(JapSpringBootStarterTest.class, args);
-    }
+
 
 }

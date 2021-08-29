@@ -14,7 +14,7 @@
 
 ## 开发日志
 
-**2021/7/13**
+##### 2021/7/13
 
 三种调用方式：
 
@@ -33,8 +33,7 @@
 
 
 
-
-**2021/7/17**
+##### 2021/7/17
 
 用一种授权方式登录后会在session上记录request，所以集成多种登录策略需要进一步思考。
 
@@ -111,7 +110,7 @@ public AbstractJapStrategy(JapUserService japUserService, JapConfig japConfig, J
 
 
 
-接口`JapUserStore`
+**接口`JapUserStore`**
 
 两个实现类：`SessionJapUserStore`、`SsoJapUserStore`（严格说这个类是继承了SessionJapUserStore的）
 
@@ -119,7 +118,7 @@ public AbstractJapStrategy(JapUserService japUserService, JapConfig japConfig, J
 
 
 
-接口`JapCache`
+**接口`JapCache`**
 
 实现类：`JapLocalCache`。里边用到了AQS作为锁的实现，有点意思，但是不难。采用的数据结构是map。
 
@@ -130,13 +129,13 @@ public AbstractJapStrategy(JapUserService japUserService, JapConfig japConfig, J
 
 
 
-接口`AuthStateCache`
+**接口`AuthStateCache`**
 
 实现类`AuthDefaultStateCache`。应该是用在social上的。
 
 
 
-**2021/7/22**
+##### 2021/7/22
 
 [如何正确控制springboot中bean的加载顺序总结](https://blog.csdn.net/qianshangding0708/article/details/107373538)
 
@@ -146,7 +145,7 @@ public AbstractJapStrategy(JapUserService japUserService, JapConfig japConfig, J
 
 [SpringMVC之RequestContextHolder分析](https://www.cnblogs.com/shuilangyizu/p/8621669.html)，讨论了request和response怎么和当前请求挂钩
 
-**2021/7/23**
+##### 2021/7/23
 
 实现了三种注入方式，以`socialStrategy`为例：
 
@@ -168,7 +167,7 @@ socialStrategy.authenticate(japProperties.getSocial(), request, response);
 
 
 
-**2021/7/28**
+##### 2021/7/28
 
 - 完成了`Oauth2Strategy`和`OidcStrategy`的注入
 - 避免了创建4种strategy的时候没有指定JapUserService。如果strategy没有指定的JapUserService，则传入`DefaultJapUserService`为JapUserService的空实现。可以过后调用`JapStrategyFactory`的`authenticate(Strategy strategy,JapUserService japUserService)`方法传入japUserService。
@@ -180,13 +179,13 @@ todo：
 
 
 
-**2021/8/10**
+##### 2021/8/10
 
 实现了`JapCache`接口的redis实现，但是还没有测试oauth2策略。目前找到关于这种策略的授权过程的文章：[OAuth 2.0 的四种方式](https://www.ruanyifeng.com/blog/2019/04/oauth-grant-types.html)。
 
 
 
-**2021/8/13**
+##### 2021/8/13
 
 重新封装了`JapTemplate`，将调用方式更加简化：
 
@@ -249,13 +248,28 @@ jap.oauth.gitee.grant-type=authorization_code
 jap.oauth.gitee.response-type=code
 ```
 
-一个大问题：redis有并发控制吗？？？？
+##### 2021/8/29
 
-**2021/8/22**
+解决了多模块互相依赖的问题，用`mvn install` 来将自己写得maven项目发布到本地maven仓库，参考了这篇文章：[Maven本地子模块互相依赖](https://juejin.cn/post/6844904038589267981)。但是后面发生了报错，解决方案为：[Maven报错：The packaging for this project did not assign a file to the build artifact](https://blog.csdn.net/gao_zhennan/article/details/89713407)，里面也提到了lifecycle和plugin的区别，执行一个lifecycle，比如`mvn install`，会把它之前的21个阶段都给执行了，而插件`mvn install:install`只会执行lifecycle中对应的install这一个phase。
 
-是否需要提供显式传入service的方法，比如这样：
+之后有遇到了一个报错：*repackage failed: Unable to find main class*，找到的解决方案是这样的：[idea中maven打包工具类 repackage failed: Unable to find main class](https://blog.csdn.net/ybb_ymm/article/details/109283783)
 
-```java
-japtemplate.simple(simpleservice);
-```
 
+
+## TODO LIST
+
+1. 是否需要提供显式传入service的方法，比如这样：
+
+   ```java
+   japtemplate.simple(simpleservice);
+   ```
+
+2. 将redis用作缓存是否需要考虑并发控制
+
+3. 关于如何获得每一种策略的`JapUserService`实现类，在`JapAutoConfiguration#getUserService(...)`的注释上写了第三种，考虑一下是否有必要实现。
+
+   > 3.（考虑是否实现）以SimpleStrategy为例，将service类的名称命名为{@code SimpleUserService}或{@code SimpleUserServiceImpl}
+
+4. 三个缓存接口**`JapUserStore`**、**`JapCache`**、**`AuthStateCache`**，如果引入了redis，那么它们全部都采用redis作为缓存，还是通过配置文件单独确定各自的缓存类型？
+
+5. >  最后 starter 的封装比较考验对 Spring Boot 自动装配的理解，建议后面浩东同学可以再深入的研究下。目前开发的 5 个 starter 通过**配置化**的形式进行选择，但是后期希望可以进行**模块化**的形式进行引入。
