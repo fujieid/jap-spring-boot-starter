@@ -108,33 +108,6 @@ public AbstractJapStrategy(JapUserService japUserService, JapConfig japConfig, J
 
 
 
-
-
-**接口`JapUserStore`**
-
-两个实现类：`SessionJapUserStore`、`SsoJapUserStore`（严格说这个类是继承了SessionJapUserStore的）
-
-主要在`AbstractJapStrategy`。以`SessionJapUserStore`为例，存储的是japUser实例，用session来存放登录信息，
-
-
-
-**接口`JapCache`**
-
-实现类：`JapLocalCache`。里边用到了AQS作为锁的实现，有点意思，但是不难。采用的数据结构是map。
-
-用处：
-
-1. `JapTokenHelper`，里面的方法们只需要两个参数，userId和token，也就是在这里japcache的用处是将userId作为key，token作为value。
-2. `OdicStrategy`和`OAuth2Strategy`，暂时还没了解
-
-
-
-**接口`AuthStateCache`**
-
-实现类`AuthDefaultStateCache`。应该是用在social上的。
-
-
-
 ##### 2021/7/22
 
 [如何正确控制springboot中bean的加载顺序总结](https://blog.csdn.net/qianshangding0708/article/details/107373538)
@@ -272,4 +245,41 @@ jap.oauth.gitee.response-type=code
 
 4. 三个缓存接口**`JapUserStore`**、**`JapCache`**、**`AuthStateCache`**，如果引入了redis，那么它们全部都采用redis作为缓存，还是通过配置文件单独确定各自的缓存类型？
 
-5. >  最后 starter 的封装比较考验对 Spring Boot 自动装配的理解，建议后面浩东同学可以再深入的研究下。目前开发的 5 个 starter 通过**配置化**的形式进行选择，但是后期希望可以进行**模块化**的形式进行引入。
+5. 还是关于缓存接口，用redisTemplate，但是每一种缓存的key虽然都是String类型，但是value是不一样的，有String,JapUser,Serialze，这个怎么搞？每一个都自定义一个redisTemplate？还是都通用一个`RedisTemplate<String,Object>`
+
+6. >  最后 starter 的封装比较考验对 Spring Boot 自动装配的理解，建议后面浩东同学可以再深入的研究下。目前开发的 5 个 starter 通过**配置化**的形式进行选择，但是后期希望可以进行**模块化**的形式进行引入。
+
+
+
+#### 三个需要用redis实现的接口
+
+**接口`JapUserStore`**
+
+两个实现类：`SessionJapUserStore`、`SsoJapUserStore`（严格说这个类是继承了SessionJapUserStore的）
+
+主要在`AbstractJapStrategy`。以`SessionJapUserStore`为例，存储的是japUser实例，用session来存放登录信息，
+
+然而四个策略类并没有提供有这个接口参数的构造器，大概是框架不欢迎自定义实现。
+
+**接口`JapCache`**
+
+默认实现类：`JapLocalCache`。里边用到了AQS作为锁的实现，有点意思，但是不难。采用的数据结构是map。
+
+用处：
+
+1. `JapTokenHelper`，里面的方法们只需要两个参数，userId和token，也就是在这里japcache的用处是将userId作为key，token作为value。
+2. 四种策略类的构造器都有用到
+
+
+
+**接口`AuthStateCache`**
+
+实现类`AuthDefaultStateCache`。只有socialstrategy的构造器上有用到。
+
+```java
+public SocialStrategy(JapUserService japUserService, JapConfig japConfig, JapCache japCache, AuthStateCache authStateCache) {
+        this(japUserService, japConfig, japCache);
+        this.authStateCache = authStateCache;
+    }
+```
+

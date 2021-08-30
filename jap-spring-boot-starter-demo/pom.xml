@@ -38,6 +38,7 @@
             <scope>test</scope>
         </dependency>
 
+        <!--jap dependencies-->
         <dependency>
             <groupId>com.fujieid.jap.spring.boot</groupId>
             <artifactId>jap-spring-boot-starter</artifactId>
@@ -48,6 +49,19 @@
             <artifactId>jap-simple-spring-boot-starter</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.fujieid.spring.boot</groupId>
+            <artifactId>jap-oidc-spring-boot-starter</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fujieid.spring.boot</groupId>
+            <artifactId>jap-social-spring-boot-starter</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+
+
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>

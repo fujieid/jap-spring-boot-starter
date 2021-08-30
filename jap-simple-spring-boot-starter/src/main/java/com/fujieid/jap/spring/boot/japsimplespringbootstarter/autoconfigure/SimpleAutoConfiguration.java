@@ -45,20 +45,7 @@ public class SimpleAutoConfiguration {
         }
     }
 
-    @Bean
-    public JapCache japCache(JapProperties japProperties,
-                             BeanFactory beanFactory,
-                             RedisTemplate<String, Serializable> redisTemplate){
-        JapCache japCache = new JapLocalCache();
-        CacheProperties.CacheType type = japProperties.getCache().getType();
 
-        if (type.equals(CacheProperties.CacheType.REDIS)) japCache = new RedisJapCache(redisTemplate,japProperties.getCache());
-        else if (type.equals(CacheProperties.CacheType.CUSTOM)) {
-            // TODO: 2021/8/9 实现自定义cache
-//            ((DefaultListableBeanFactory)beanFactory).registerSingleton("customJapCache",);
-        }
-        return japCache;
-    }
 
 
 }
