@@ -1,8 +1,11 @@
 package com.fujieid.spring.boot.japsocialspringbootstarter.autoconfigure;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.fujieid.jap.core.JapUserService;
 import com.fujieid.jap.core.cache.JapCache;
+import com.fujieid.jap.core.exception.JapException;
 import com.fujieid.jap.social.SocialStrategy;
+import com.fujieid.jap.spring.boot.starter.JapTemplate;
 import com.fujieid.jap.spring.boot.starter.autoconfigure.JapProperties;
 import com.fujieid.jap.spring.boot.starter.autoconfigure.JapUserServiceType;
 import com.fujieid.jap.spring.boot.starter.support.util.JapUtil;
@@ -22,14 +25,16 @@ public class SocialAutoConfiguration {
     public SocialStrategy socialStrategy(ApplicationContext applicationContext,
                                          JapProperties japProperties,
                                          JapCache japCache,
-                                         AuthStateCache authStateCache) {
-        try {
+                                         AuthStateCache authStateCache,
+                                         JapTemplate japTemplate) {
+        try{
             JapUserService social = JapUtil.getUserService(applicationContext, JapUserServiceType.SOCIAL, japProperties.getSocialUserService());
-
-            return new SocialStrategy(social, japProperties.getBasic(), japCache,authStateCache);
-        } catch (Exception e){
-            log.warn("尚未指定socialStrategy的JapUserService。若需采用该策略进行认证，请指定JapUserService实现类");
-            return new SocialStrategy(null,japProperties.getBasic(),japCache);
+            SocialStrategy socialStrategy = new SocialStrategy(social, japProperties.getBasic(), japCache, authStateCache);
+            japTemplate.setSocialStrategy(socialStrategy);
+            return socialStrategy;
+        } catch (Exception e) {
+            throw new JapException("尚未指定socialStrategy的JapUserService。若需采用该策略进行认证，请指定JapUserService实现类");
         }
+
     }
 }

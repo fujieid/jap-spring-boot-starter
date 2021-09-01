@@ -16,7 +16,19 @@ public class CacheProperties {
      */
     // TODO: 2021/8/22 三个缓存接口JapUserStore、JapCache、AuthStateCache，如果引入了redis，
     //  那么它们全部都采用redis作为缓存，还是通过配置文件单独确定各自的缓存类型？
-    private CacheType type = CacheType.DEFAULT;
+    /**
+     * JapCache接口的缓存类型，也是token的缓存类型
+      */
+    private CacheType tokenCacheType = CacheType.DEFAULT;
+    /**
+     * JapUserStore接口的缓存类型，也是用户登录状态的缓存类型
+     */
+    private CacheType userStoreType = CacheType.DEFAULT;
+
+    /**
+     * SocialStrategy有用到
+     */
+    private CacheType authStateType = CacheType.DEFAULT;
 
     /**
      * 若缓存类型为custom则需指定实现类
@@ -24,7 +36,7 @@ public class CacheProperties {
     private Class<?> customClass;
 
     /**
-     * 缓存前缀，目前只对redis缓存生效，默认 JAP::CACHE::
+     * 缓存前缀
      */
     private String cachePrefix = "JAP::CACHE::";
 

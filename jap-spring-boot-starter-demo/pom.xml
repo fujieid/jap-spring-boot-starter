@@ -51,7 +51,7 @@
         </dependency>
         <dependency>
             <groupId>com.fujieid.spring.boot</groupId>
-            <artifactId>jap-oidc-spring-boot-starter</artifactId>
+            <artifactId>jap-oauth2-spring-boot-starter</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
@@ -74,6 +74,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.5.3</version>
                 <configuration>
                     <excludes>
                         <exclude>

@@ -53,6 +53,6 @@ public class RedisJapCache implements JapCache {
 
     @Override
     public void removeKey(String key) {
-        redisTemplate.delete(key);
+        redisTemplate.delete(cacheProperties.getCachePrefix()+key);
     }
 }
