@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.fujieid.jap.spring.boot</groupId>
-    <artifactId>jap-oidc-spring-boot-starter</artifactId>
+    <artifactId>jap-common</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>jap-oidc-spring-boot-starter</name>
+    <name>jap-common</name>
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>11</java.version>
@@ -20,23 +20,27 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
+            <version>2.5.4</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>2.5.4</version>
+        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
-
         <dependency>
-            <groupId>com.fujieid</groupId>
-            <artifactId>jap-oidc</artifactId>
-            <version>1.0.4</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <version>2.5.4</version>
         </dependency>
         <dependency>
-            <groupId>com.fujieid.jap.spring.boot</groupId>
-            <artifactId>jap-common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <groupId>com.fujieid</groupId>
+            <artifactId>jap-core</artifactId>
+            <version>1.0.4</version>
         </dependency>
     </dependencies>
 

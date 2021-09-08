@@ -1,3 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.fujieid.jap.spring.boot.starter.autoconfigure.JapAutoConfiguration,\
-com.fujieid.jap.spring.boot.starter.autoconfigure.JapCacheAutoConfiguration
+com.fujieid.jap.spring.boot.starter.autoconfigure.JapTemplateAutoConfiguration

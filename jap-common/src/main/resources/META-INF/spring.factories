@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.fujieid.jap.spring.boot.common.autoconfigure.JapBasicAutoConfiguration,\
+  com.fujieid.jap.spring.boot.common.autoconfigure.CacheAutoConfiguration

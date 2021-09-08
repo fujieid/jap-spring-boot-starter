@@ -21,51 +21,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
+            <version>2.5.4</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
-        </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>2.5.2</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fujieid</groupId>
-            <artifactId>jap-simple</artifactId>
-            <version>1.0.4</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fujieid</groupId>
-            <artifactId>jap-social</artifactId>
-            <version>1.0.4</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fujieid</groupId>
-            <artifactId>jap-oauth2</artifactId>
-            <version>1.0.4</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fujieid</groupId>
-            <artifactId>jap-oidc</artifactId>
-            <version>1.0.4</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-            <version>2.5.2</version>
+            <version>2.5.4</version>
         </dependency>
 
         <dependency>
@@ -74,16 +35,37 @@
             <optional>true</optional>
         </dependency>
 
+        <dependency>
+            <groupId>com.fujieid.jap.spring.boot</groupId>
+            <artifactId>jap-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fujieid.jap.spring.boot</groupId>
+            <artifactId>jap-simple-spring-boot-starter</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.fujieid.jap.spring.boot</groupId>
+            <artifactId>jap-social-spring-boot-starter</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.fujieid.jap.spring.boot</groupId>
+            <artifactId>jap-oauth2-spring-boot-starter</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.fujieid.jap.spring.boot</groupId>
+            <artifactId>jap-oidc-spring-boot-starter</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <optional>true</optional>
+        </dependency>
+
     </dependencies>
 
-<!--    <build>-->
-<!--        <plugins>-->
-<!--            <plugin>-->
-<!--                <groupId>org.springframework.boot</groupId>-->
-<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
-<!--                <version>2.5.4</version>-->
-<!--            </plugin>-->
-<!--        </plugins>-->
-<!--    </build>-->
 
 </project>
