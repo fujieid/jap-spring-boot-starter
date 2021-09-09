@@ -29,7 +29,6 @@ public class JapTemplate {
     ApplicationContext applicationContext;
 
 
-    // TODO: 2021/8/13 是否需要支持传入JapUserService参数?
     public JapResponse simple() {
         SimpleStrategy simpleStrategy;
         SimpleProperties simpleProperties;

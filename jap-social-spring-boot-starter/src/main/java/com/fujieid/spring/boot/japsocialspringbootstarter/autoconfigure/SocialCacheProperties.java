@@ -17,12 +17,8 @@ public class SocialCacheProperties {
     private CacheType type = CacheType.DEFAULT;
     private String prefix = "JAP::AUTHSTATE::";
     /**
-     * 超时时长，目前只对redis缓存生效，默认3分钟
+     * 超时时长，只对redis缓存生效，默认3分钟
      */
     private Duration timeout = Duration.ofMinutes(3);
 
-    /**
-     * 若缓存类型为custom则需指定实现类
-     */
-    private Class<?> customClass;
 }

@@ -13,10 +13,10 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 public class JapBasicProperties {
 
     @NestedConfigurationProperty
-    JapConfig basic = new JapConfig();
+    private JapConfig basic = new JapConfig();
 
     @NestedConfigurationProperty
-    JapSsoConfig sso = new JapSsoConfig();
+    private JapSsoConfig sso = new JapSsoConfig();
 
     public void setSso(JapSsoConfig sso) {
         // 设置sso的时候要把该sso配置到JapConfig对象中

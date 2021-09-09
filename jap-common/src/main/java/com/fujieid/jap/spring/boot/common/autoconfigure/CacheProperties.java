@@ -3,47 +3,64 @@ package com.fujieid.jap.spring.boot.common.autoconfigure;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import java.time.Duration;
 
 /**
  * 缓存配置类
  */
+@ConfigurationProperties(prefix = "jap.cache")
 @Getter
 @Setter
-@ConfigurationProperties(prefix = "jap.cache")
 public class CacheProperties {
+
     /**
-     * 缓存类型
+     * token缓存配置
      */
-    // TODO: 2021/8/22 三个缓存接口JapUserStore、JapCache、AuthStateCache，如果引入了redis，
-    //  那么它们全部都采用redis作为缓存，还是通过配置文件单独确定各自的缓存类型？
+    @NestedConfigurationProperty
+    private TokenCache token = new TokenCache();
     /**
-     * JapCache接口的缓存类型，也是token的缓存类型
+     * 用户登录信息的缓存配置
      */
-    private CacheType tokenCacheType = CacheType.DEFAULT;
-    /**
-     * JapUserStore接口的缓存类型，也是用户登录状态的缓存类型
-     */
-    private CacheType userStoreType = CacheType.DEFAULT;
+    // TODO: 2021/9/8 取个什么名字好呢？表示这是用户登录状态的缓存配置
+    @NestedConfigurationProperty
+    private UserStore user = new UserStore();
 
 
     /**
-     * 若缓存类型为custom则需指定实现类
+     * token缓存配置（JapCache接口）
      */
-    private Class<?> customClass;
+    @Getter
+    @Setter
+    public static class TokenCache{
+        /**
+         * token缓存类型
+         */
+        private CacheType type = CacheType.DEFAULT;
+        /**
+         * token缓存前缀
+         */
+        private String prefix = "JAP::TOKEN::CACHE::";
+        /**
+         * token过期时间
+         */
+        private Duration expireTime = Duration.ofMinutes(3);
+    }
 
     /**
-     * 缓存前缀
+     * 用户登录信息的缓存配置（JapUserStore接口）
      */
-    private String cachePrefix = "JAP::CACHE::";
+    @Getter
+    @Setter
+    public static class UserStore{
+        /**
+         * 用户登录信息的缓存类型，缓存JapUser实例
+         */
+        private CacheType type = CacheType.DEFAULT;
 
-    private String userStorePrefix = "JAP::USERSTORE::";
-
-    /**
-     * 超时时长，目前只对redis缓存生效，默认3分钟
-     */
-    private Duration timeout = Duration.ofMinutes(3);
-
+        private String prefix = "JAP::USER::STORE::";
+        private Duration expireTime = Duration.ofMinutes(3);
+    }
 
 }

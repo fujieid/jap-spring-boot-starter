@@ -17,8 +17,6 @@ public class JapTemplateAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public JapTemplate japTemplate(){
-        // TODO: 2021/8/29 需要模块化的方式引入每一个strategy，那么这里的代码就需要改变，
-        //  不用等到所有的strategy都注入了才引用，而只需要japProperties和applicationContext
         return new JapTemplate();
     }
 

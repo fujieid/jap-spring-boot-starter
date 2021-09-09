@@ -224,7 +224,54 @@ jap.oauth.gitee.response-type=code
 >
 > 也就是说**编译**这些@Configuration类时依赖的jar是必须存在的，但是**运行时**这些jar可以不提供
 
+[spring-boot-configuration-processor 的作用](https://www.jianshu.com/p/ca22783b0a35)。等一下尝试一下！！！
 
+
+
+application.properties也可以改成yml格式，但是对map的支持不太友好，没有代码提示，另外还需**注意每一个“: ”后要加空格**，不然没法识别。比如：
+
+```yml
+jap:
+	social:
+		gitee: 
+			platform: gitee
+			state: 34r3f0fod3
+		github:
+			platform: github
+```
+
+##### 2021/9/8
+
+关于JSESSIONID，参考：[JSESSIONID的简单说明_杨春建的博客-CSDN博客_jsessionid](https://blog.csdn.net/tanga842428/article/details/78600940)，其实它就是一个cookie，值和session的ID一致。
+
+
+
+下面是关于redisTemplate自动注入的两个单例`RedisTemplate<Object,Objest>`和`RedisTemplate<String,String>`，其实直接看源码的autoconfiguration啥都明了了。
+
+```java
+    /**
+     * 参数中的redisTemplate是{@code RedisTemplate<String,String>}类型，这个类型和RedisTemplate类型一样，都是redistemplate依赖
+     * 自动创建的bean，于是没有必要自己创建一个。而比如前面代码中我自己创建的{@code RedisTemplate<String,Serializable>}就和提到的这两种
+     * RedisTemplate不是同一种类型，所以需要自己创建并注入bean。同时，注入bean不是按照名字，而是按照类型的，也就是虽然这个类中所有redisTemplate
+     * 形参变量的名字都是redisTemplate，但是由于bean是单例模式，不会根据redisTemplate这个名字来寻找对应的bean，而是通过redisTemplate这个名字的
+     * 类型来寻找！比如{@code RedisTemplate<String,String> redisTemplate}和{@code RedisTemplate<String,JapUser> redisTemplate}
+     * 虽然实参变量名都是redisTemplate，但是最后bean容器注入那个单例是按照它们的类型来决定的。
+     */
+```
+
+发现一个重要的问题，在注入不同泛型的RedisTemplate的时候不能有@ConditionalOnMissionBean，因为不论多少个泛型，都是`org.springframework.data.redis.core.RedisTemplate`这一种类型的！！！所以这个时候只会注入所有`RedisTemplate<?,?>`中的一个。
+
+但不加@ConditionalOnMissionBean不是特别好，我觉得可以模仿StringRedisTemplate的做法：`StringRedisTemplate extends RedisTemplate<String, String>`，主要考虑用户保持现状可能对用户不是很友好，但是应该没有用户会自己创建一个redistemplate吧，都是用`RedisTemplate<Object,Obkect>`这个，如果要自定义的话应该得有我这个觉悟我觉得！
+
+
+
+serilazable:@5910
+
+
+
+##### 2021/9/9
+
+开发阶段基本完成，现在开始测试，从oauth2开始。
 
 ## TODO LIST
 
@@ -244,7 +291,6 @@ jap.oauth.gitee.response-type=code
 
 5. 还是关于缓存接口，用redisTemplate，但是每一种缓存的key虽然都是String类型，但是value是不一样的，有String,JapUser,Serialze，这个怎么搞？每一个都自定义一个redisTemplate？还是都通用一个`RedisTemplate<String,Object>`
 
-6. >  最后 starter 的封装比较考验对 Spring Boot 自动装配的理解，建议后面浩东同学可以再深入的研究下。目前开发的 5 个 starter 通过**配置化**的形式进行选择，但是后期希望可以进行**模块化**的形式进行引入。
 
 
 
@@ -286,6 +332,8 @@ jap.oauth.gitee.response-type=code
 
    通过上边的分析，既然存token的`JapCache`的全局一样的，那么我在`application.properties`中就可以只用一个属性来表示，比如：`jap.token-cache.type=default/redis`。而`JapUserStore`要更具不同的strategy来配置，比如`jap.simple-userstore.type=redis`
 
+   另外也要注意，这个对象是全局的，也是就是全局采用的是redis做token缓存，则所有的strategy都采用redis。
+
 2. 四种策略类的构造器都有用到
 
 
@@ -301,3 +349,4 @@ public SocialStrategy(JapUserService japUserService, JapConfig japConfig, JapCac
     }
 ```
 
+AuthDefaultStateCache给了我一个新的实现单例模式的思路！

@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 // TODO: 2021/8/13
 
 /**
- * 这是用于social的存储
+ * 用于SocialStrategy的缓存
  */
 public class RedisAuthStateCache implements AuthStateCache {
     private RedisTemplate<String, String> redisTemplate;
@@ -41,7 +41,7 @@ public class RedisAuthStateCache implements AuthStateCache {
     public boolean containsKey(String key) {
         Long expire = redisTemplate.getExpire(socialCacheProperties.getPrefix() + key, TimeUnit.MILLISECONDS);//单位 毫秒
         if (ObjectUtil.isNull(expire))
-            expire=0L;
+            return false;
         return expire>0;
     }
 }

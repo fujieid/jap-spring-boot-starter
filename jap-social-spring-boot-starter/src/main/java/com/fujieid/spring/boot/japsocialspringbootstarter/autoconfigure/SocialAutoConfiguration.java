@@ -38,10 +38,13 @@ public class SocialAutoConfiguration {
     public AuthStateCache authStateCache(SocialCacheProperties socialCacheProperties,
                                          RedisTemplate<String, String> redisTemplate){
         CacheType type = socialCacheProperties.getType();
+        if (type.equals(CacheType.DEFAULT))
+            return AuthDefaultStateCache.INSTANCE;
         if (type.equals(CacheType.REDIS)){
             return new RedisAuthStateCache(redisTemplate,socialCacheProperties);
         }
-        return AuthDefaultStateCache.INSTANCE;
+        log.warn("没有指定SocialStrategy的缓存，请自定义");
+        return null;
 
     }
 }
