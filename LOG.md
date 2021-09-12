@@ -265,13 +265,79 @@ jap:
 
 
 
-serilazable:@5910
+
 
 
 
 ##### 2021/9/9
 
 开发阶段基本完成，现在开始测试，从oauth2开始。
+
+[如何禁止chrome浏览器http自动转成https](https://blog.csdn.net/thewindkee/article/details/80668974?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-1.no_search_link&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-1.no_search_link)
+
+
+
+##### 2021/9/10
+
+有四种grant_type，那么每一个platform应该要支持不止一个grant_type吧。仅oauth strategy需要做这样的处理！所以对于oauth的japTemplate，需要传递除了platform之外的另一个参数：grant_type。
+
+
+
+[Login with GitHub](https://github.com/login/oauth/authorize?client_id=772a23a61ae5ef9df25e&redirect_uri=http://localhost:8080/oauth/github/redirect)
+
+
+
+##### 2021/9/11
+
+整理一下每个strategy提供的public方法：
+
+都有的： `authenticate`
+
+Simple：
+
+Social：
+
+`refreshToken(AuthenticateConfig config, AuthToken authToken)`
+
+`revokeToken(AuthenticateConfig config, AuthToken authToken)`
+
+`getUserInfo(AuthenticateConfig config, AuthToken authToken)`
+
+Oauth2：
+
+`refreshToken(AuthenticateConfig config, String refreshToken)`
+
+`revokeToken(AuthenticateConfig config, String accessToken)`
+
+`getUserInfo(AuthenticateConfig config, AccessToken accessToken)`
+
+- Oauth2GrantType:
+
+  **authorization_code**、**（implicit）**、password、client_credentials、refresh_token（这三的Oauth2ResponseType为none）、
+
+- Oauth2ResponseType：
+
+  **code（对应authorization_code）**、**token（对应implicit方式）**、none
+
+Oauth2ResponseType为code时，Oauth2GrantType为authorization_code
+
+Oauth2ResponseType为token时，Oauth2GrantType就是implicit，也就是可以不写
+
+因为这两种方式都有callback-url，也就是要重定向到你的应用服务器上
+
+总的来说，就5种方法授权
+
+
+
+Oidc：同Oauth2，只是重写了authenticate方法。
+
+
+
+
+
+##### 2021/9/12
+
+当项目种出现如`java.lang.NoSuchFieldError`等时，请把自己开发的依赖的模块，比如jap-common等用maven的lifecycle和plugins中的clean都清理一遍。
 
 ## TODO LIST
 
@@ -281,22 +347,26 @@ serilazable:@5910
    japtemplate.simple(simpleservice);
    ```
 
-2. 将redis用作缓存是否需要考虑并发控制
+   ➡完全不需要！
 
-3. 关于如何获得每一种策略的`JapUserService`实现类，在`JapAutoConfiguration#getUserService(...)`的注释上写了第三种，考虑一下是否有必要实现。
+2. 将redis用作缓存是否需要考虑并发控制。
 
-   > 3.（考虑是否实现）以SimpleStrategy为例，将service类的名称命名为{@code SimpleUserService}或{@code SimpleUserServiceImpl}
+   ➡应该不需要，redis好像是单线程的，基于netty，不存在并发线程安全问题。
 
-4. 三个缓存接口**`JapUserStore`**、**`JapCache`**、**`AuthStateCache`**，如果引入了redis，那么它们全部都采用redis作为缓存，还是通过配置文件单独确定各自的缓存类型？
+3. 三个缓存接口**`JapUserStore`**、**`JapCache`**、**`AuthStateCache`**，如果引入了redis，那么它们全部都采用redis作为缓存，还是通过配置文件单独确定各自的缓存类型？
 
-5. 还是关于缓存接口，用redisTemplate，但是每一种缓存的key虽然都是String类型，但是value是不一样的，有String,JapUser,Serialze，这个怎么搞？每一个都自定义一个redisTemplate？还是都通用一个`RedisTemplate<String,Object>`
+   ➡前两个是全局的，第三种只有social在用。
+
+   
+
+
 
 
 
 
 #### 三个需要用redis实现的接口
 
-**接口`JapUserStore`**
+##### 接口`JapUserStore`
 
 两个实现类：`SessionJapUserStore`、`SsoJapUserStore`（严格说这个类是继承了SessionJapUserStore的）
 
@@ -304,7 +374,7 @@ serilazable:@5910
 
 然而四个策略类并没有提供有这个接口参数的构造器，大概是框架不欢迎自定义实现。
 
-**接口`JapCache`**🧨
+##### 接口`JapCache`🧨
 
 主要用来存token。默认实现类：`JapLocalCache`。里边用到了AQS作为锁的实现，有点意思，但是不难。采用的数据结构是map。
 
@@ -336,9 +406,7 @@ serilazable:@5910
 
 2. 四种策略类的构造器都有用到
 
-
-
-**接口`AuthStateCache`**
+##### 接口`AuthStateCache`
 
 实现类`AuthDefaultStateCache`。只有socialstrategy的构造器上有用到。
 
