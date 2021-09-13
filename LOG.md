@@ -224,6 +224,8 @@ jap.oauth.gitee.response-type=code
 >
 > 也就是说**编译**这些@Configuration类时依赖的jar是必须存在的，但是**运行时**这些jar可以不提供
 
+一般ConditionalOnClass用在类上，还是不要用在方法上，好像很复杂的样子。
+
 [spring-boot-configuration-processor 的作用](https://www.jianshu.com/p/ca22783b0a35)。等一下尝试一下！！！
 
 
@@ -261,7 +263,7 @@ jap:
 
 发现一个重要的问题，在注入不同泛型的RedisTemplate的时候不能有@ConditionalOnMissionBean，因为不论多少个泛型，都是`org.springframework.data.redis.core.RedisTemplate`这一种类型的！！！所以这个时候只会注入所有`RedisTemplate<?,?>`中的一个。
 
-但不加@ConditionalOnMissionBean不是特别好，我觉得可以模仿StringRedisTemplate的做法：`StringRedisTemplate extends RedisTemplate<String, String>`，主要考虑用户保持现状可能对用户不是很友好，但是应该没有用户会自己创建一个redistemplate吧，都是用`RedisTemplate<Object,Obkect>`这个，如果要自定义的话应该得有我这个觉悟我觉得！
+但不加@ConditionalOnMissingBean不是特别好，我觉得可以模仿StringRedisTemplate的做法：`StringRedisTemplate extends RedisTemplate<String, String>`，主要考虑用户保持现状可能对用户不是很友好，但是应该没有用户会自己创建一个redistemplate吧，都是用`RedisTemplate<Object,Obkect>`这个，如果要自定义的话应该得有我这个觉悟我觉得！
 
 
 
@@ -338,6 +340,16 @@ Oidc：同Oauth2，只是重写了authenticate方法。
 ##### 2021/9/12
 
 当项目种出现如`java.lang.NoSuchFieldError`等时，请把自己开发的依赖的模块，比如jap-common等用maven的lifecycle和plugins中的clean都清理一遍。
+
+
+
+
+
+##### 2021/9/13
+
+学一学justauth-spring-boot-starter的JustAuthStateCacheConfiguration，很厉害！里面一些之前不怎么会用的注解：
+
+@AutoConfigureBefore(RedisAutoConfiguration.class)，这样就可以使用自己的StringRedisTemplate了，而不用本来提供的那个。
 
 ## TODO LIST
 

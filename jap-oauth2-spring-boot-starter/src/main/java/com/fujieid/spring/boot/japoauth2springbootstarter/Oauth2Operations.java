@@ -67,8 +67,8 @@ public class Oauth2Operations {
     public JapResponse authenticateByPassword(String platform, String username, String password){
         OAuthConfig oauthConfig = findOauthConfig(platform, Oauth2GrantType.password);
         OAuthConfig newOauthConfig = BeanUtil.copyProperties(oauthConfig, OAuthConfig.class, "username", "password");
-        oauthConfig.setUsername(username);
-        oauthConfig.setPassword(password);
+        newOauthConfig.setUsername(username);
+        newOauthConfig.setPassword(password);
         return JapUtil.authenticate(this.oauth2Strategy, newOauthConfig);
     }
 

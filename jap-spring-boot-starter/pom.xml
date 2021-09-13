@@ -44,25 +44,21 @@
             <groupId>com.fujieid.jap.spring.boot</groupId>
             <artifactId>jap-simple-spring-boot-starter</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.fujieid.jap.spring.boot</groupId>
             <artifactId>jap-social-spring-boot-starter</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.fujieid.jap.spring.boot</groupId>
             <artifactId>jap-oauth2-spring-boot-starter</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.fujieid.jap.spring.boot</groupId>
             <artifactId>jap-oidc-spring-boot-starter</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <optional>true</optional>
         </dependency>
 
     </dependencies>

@@ -13,6 +13,6 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 @Setter
 public class SimpleProperties {
     @NestedConfigurationProperty
-    SimpleConfig simple = new SimpleConfig();
+    private SimpleConfig simple = new SimpleConfig();
     Class<? extends JapUserService> simpleUserService;
 }

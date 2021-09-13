@@ -8,6 +8,7 @@ import com.fujieid.jap.core.exception.JapException;
 import com.fujieid.jap.core.result.JapResponse;
 import com.fujieid.jap.core.strategy.AbstractJapStrategy;
 import com.fujieid.jap.spring.boot.common.autoconfigure.JapUserServiceType;
+import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -28,19 +29,13 @@ public class JapUtil {
      * @return
      */
     public static JapUserService getUserService(ApplicationContext applicationContext,
-                                                String japUserServiceType, Class<?> clazz){
+                                                String japUserServiceType, Class<?> clazz) throws BeansException{
         if (!ObjectUtil.isNull(clazz) && !ClassUtil.isAssignable(JapUserService.class,clazz)) {
             throw new JapException("Unsupported parameter type, please use " + ClassUtil.getClassName(JapUserService.class, true) + ", an implement of JapUserService");
         }
-        try {
-            return applicationContext.containsBean(japUserServiceType) ?
-                    (JapUserService) applicationContext.getBean(japUserServiceType) :
-                    (JapUserService) applicationContext.getBean(clazz);
-        } catch (Exception e){
-            e.printStackTrace();
-            throw new JapException("没有相应的userService!");
-        }
-
+        return applicationContext.containsBean(japUserServiceType) ?
+                (JapUserService) applicationContext.getBean(japUserServiceType) :
+                (JapUserService) applicationContext.getBean(clazz);
     }
     public static JapResponse authenticate(AbstractJapStrategy abstractJapStrategy,
                                        AuthenticateConfig authenticateConfig){
