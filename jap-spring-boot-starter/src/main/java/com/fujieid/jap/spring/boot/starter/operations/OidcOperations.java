@@ -1,4 +1,4 @@
-package com.fujieid.spring.boot.japoidcspringbootstarter;
+package com.fujieid.jap.spring.boot.starter.operations;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.fujieid.jap.core.exception.JapException;
@@ -8,7 +8,7 @@ import com.fujieid.jap.oidc.OidcStrategy;
 import com.fujieid.jap.spring.boot.common.util.JapUtil;
 import com.fujieid.spring.boot.japoidcspringbootstarter.autoconfigure.OidcProperties;
 
-public class OidcOperations {
+public class OidcOperations extends AbstractJapOperations{
     private OidcStrategy oidcStrategy;
     private OidcProperties oidcProperties;
 
@@ -21,7 +21,7 @@ public class OidcOperations {
         OidcConfig oidcConfig = this.oidcProperties.getOidc().get(platform);
         if (ObjectUtil.isNull(oidcConfig))
             throw new JapException("没有"+platform+"平台的相应配置");
-        return JapUtil.authenticate(this.oidcStrategy,oidcConfig);
+        return super.authenticate(this.oidcStrategy,oidcConfig);
     }
 
 }

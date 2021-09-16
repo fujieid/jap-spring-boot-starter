@@ -1,24 +1,19 @@
 package com.fujieid.jap.spring.boot.starter.autoconfigure;
 
-import com.fujieid.jap.oauth2.Oauth2Strategy;
-import com.fujieid.jap.oidc.OidcStrategy;
+import cn.hutool.core.util.ObjectUtil;
+import com.fujieid.jap.core.exception.JapException;
 import com.fujieid.jap.simple.SimpleStrategy;
-import com.fujieid.jap.social.SocialStrategy;
-import com.fujieid.jap.spring.boot.japsimplespringbootstarter.SimpleOperations;
 import com.fujieid.jap.spring.boot.japsimplespringbootstarter.autoconfigure.SimpleProperties;
 import com.fujieid.jap.spring.boot.starter.JapTemplate;
-import com.fujieid.spring.boot.japoauth2springbootstarter.Oauth2Operations;
-import com.fujieid.spring.boot.japoauth2springbootstarter.autoconfigure.Oauth2Properties;
-import com.fujieid.spring.boot.japoidcspringbootstarter.OidcOperations;
-import com.fujieid.spring.boot.japoidcspringbootstarter.autoconfigure.OidcProperties;
-import com.fujieid.spring.boot.japsocialspringbootstarter.SocialOperations;
-import com.fujieid.spring.boot.japsocialspringbootstarter.autoconfigure.SocialProperties;
+import com.fujieid.jap.spring.boot.starter.operations.SimpleOperations;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 @Configuration
 @Slf4j
@@ -28,6 +23,14 @@ public class JapTemplateAutoConfiguration {
     @ConditionalOnMissingBean
     public JapTemplate japTemplate(ApplicationContext applicationContext){
         return new JapTemplate(applicationContext);
+    }
+
+    @Configuration
+    @Import({OperationAutoConfiguration.Simple.class,
+            OperationAutoConfiguration.Social.class,
+            OperationAutoConfiguration.Oauth2.class,
+            OperationAutoConfiguration.Oidc.class})
+    static class OpsConfig{
     }
 
 }

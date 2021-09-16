@@ -1,11 +1,11 @@
-package com.fujieid.jap.spring.boot.japsimplespringbootstarter;
+package com.fujieid.jap.spring.boot.starter.operations;
 
 import com.fujieid.jap.core.result.JapResponse;
 import com.fujieid.jap.simple.SimpleStrategy;
 import com.fujieid.jap.spring.boot.common.util.JapUtil;
 import com.fujieid.jap.spring.boot.japsimplespringbootstarter.autoconfigure.SimpleProperties;
 
-public class SimpleOperations {
+public class SimpleOperations extends AbstractJapOperations{
     private SimpleStrategy simpleStrategy;
     private SimpleProperties simpleProperties;
 
@@ -14,6 +14,6 @@ public class SimpleOperations {
         this.simpleProperties = simpleProperties;
     }
     public JapResponse authenticate(){
-        return JapUtil.authenticate(this.simpleStrategy,this.simpleProperties.getSimple());
+        return super.authenticate(this.simpleStrategy,this.simpleProperties.getSimple());
     }
 }

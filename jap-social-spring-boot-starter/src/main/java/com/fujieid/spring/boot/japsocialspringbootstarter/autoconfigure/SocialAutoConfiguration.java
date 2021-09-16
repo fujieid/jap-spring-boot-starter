@@ -1,15 +1,14 @@
 package com.fujieid.spring.boot.japsocialspringbootstarter.autoconfigure;
 
-import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.text.StrFormatter;
 import com.fujieid.jap.core.JapUserService;
 import com.fujieid.jap.core.cache.JapCache;
-import com.fujieid.jap.core.exception.JapOauth2Exception;
+import com.fujieid.jap.core.exception.JapSocialException;
 import com.fujieid.jap.social.SocialStrategy;
-import com.fujieid.jap.spring.boot.common.autoconfigure.JapBasicProperties;
 import com.fujieid.jap.spring.boot.common.autoconfigure.CacheType;
+import com.fujieid.jap.spring.boot.common.autoconfigure.JapBasicProperties;
 import com.fujieid.jap.spring.boot.common.autoconfigure.JapUserServiceType;
 import com.fujieid.jap.spring.boot.common.util.JapUtil;
-import com.fujieid.spring.boot.japsocialspringbootstarter.SocialOperations;
 import com.fujieid.spring.boot.japsocialspringbootstarter.cache.RedisAuthStateCache;
 import lombok.extern.slf4j.Slf4j;
 import me.zhyd.oauth.cache.AuthDefaultStateCache;
@@ -26,8 +25,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 @EnableConfigurationProperties({SocialProperties.class, SocialCacheProperties.class})
 @Slf4j
 public class SocialAutoConfiguration {
-    final private String NO_USE_THIS_STRATEGY="没有使用oauth策略";
-    final private String MISS_CONFIG_INFO="缺少Oauth相关配置，请在application.properties/yml文件中进行配置";
     @Bean
     @ConditionalOnMissingBean
     public SocialStrategy socialStrategy(ApplicationContext applicationContext,
@@ -39,20 +36,12 @@ public class SocialAutoConfiguration {
             JapUserService userService = JapUtil.getUserService(applicationContext, JapUserServiceType.SOCIAL, socialProperties.getSocialUserService());
             return new SocialStrategy(userService, basicProperties.getBasic(), japCache, authStateCache);
         } catch (BeansException | IllegalArgumentException e){
-            log.warn(NO_USE_THIS_STRATEGY);
-            return null;
+            String error = StrFormatter.format(JapUtil.STRATEGY_NO_USERSERVICE,"SocialStrategy");
+            log.error(error);
+            throw new JapSocialException(error, e.getCause());
         }
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public SocialOperations socialOperations(SocialStrategy socialStrategy, SocialProperties socialProperties){
-        if(ObjectUtil.isNull(socialStrategy))
-            return null;
-        if (socialProperties.getSocial().isEmpty())
-            throw new JapOauth2Exception("缺少SocialConfig配置");
-        return new SocialOperations(socialStrategy, socialProperties);
-    }
 
     @Bean
     @ConditionalOnMissingBean
@@ -64,7 +53,7 @@ public class SocialAutoConfiguration {
         if (type.equals(CacheType.REDIS)){
             return new RedisAuthStateCache(redisTemplate,socialCacheProperties);
         }
-        log.warn(MISS_CONFIG_INFO);
+        log.warn("缺少me.zhyd.oauth.cache.AuthStateCache实例，请自行实现");
         return null;
 
     }

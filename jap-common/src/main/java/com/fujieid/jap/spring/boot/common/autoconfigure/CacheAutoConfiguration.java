@@ -4,14 +4,14 @@ import com.fujieid.jap.core.JapUser;
 import com.fujieid.jap.core.cache.JapCache;
 import com.fujieid.jap.core.cache.JapLocalCache;
 import com.fujieid.jap.core.store.JapUserStore;
-import com.fujieid.jap.core.store.SessionJapUserStore;
-import com.fujieid.jap.core.store.SsoJapUserStore;
 import com.fujieid.jap.spring.boot.common.cache.RedisJapCache;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.BeanFactory;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -19,6 +19,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 import java.io.Serializable;
 
+// TODO: 2021/9/16 实现redis的插件形式引入
 @Configuration
 @EnableConfigurationProperties({CacheProperties.class})
 @Slf4j

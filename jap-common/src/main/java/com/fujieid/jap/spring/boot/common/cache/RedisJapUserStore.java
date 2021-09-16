@@ -5,14 +5,12 @@ import cn.hutool.core.util.ObjectUtil;
 import com.fujieid.jap.core.JapUser;
 import com.fujieid.jap.core.config.JapConfig;
 import com.fujieid.jap.core.context.JapAuthentication;
-import com.fujieid.jap.core.exception.JapException;
 import com.fujieid.jap.core.store.JapUserStore;
 import com.fujieid.jap.core.util.JapTokenHelper;
 import com.fujieid.jap.core.util.JapUtil;
 import com.fujieid.jap.spring.boot.common.autoconfigure.CacheProperties;
 import org.springframework.data.redis.core.RedisTemplate;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;

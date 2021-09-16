@@ -1,6 +1,7 @@
-package com.fujieid.spring.boot.japoauth2springbootstarter;
+package com.fujieid.jap.spring.boot.starter.operations;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.text.StrFormatter;
 import cn.hutool.core.util.ObjectUtil;
 import com.fujieid.jap.core.exception.JapException;
 import com.fujieid.jap.core.result.JapResponse;
@@ -9,14 +10,16 @@ import com.fujieid.jap.oauth2.Oauth2GrantType;
 import com.fujieid.jap.oauth2.Oauth2ResponseType;
 import com.fujieid.jap.oauth2.Oauth2Strategy;
 import com.fujieid.jap.oauth2.token.AccessToken;
-import com.fujieid.jap.spring.boot.common.util.JapUtil;
 import com.fujieid.spring.boot.japoauth2springbootstarter.autoconfigure.Oauth2Properties;
 
 import java.util.Optional;
 
-public class Oauth2Operations {
+public class Oauth2Operations extends AbstractJapOperations{
     private Oauth2Strategy oauth2Strategy;
     private Oauth2Properties oauth2Properties;
+
+    final private String PLATFORM_NO_AUTH_METHOD = "{} 平台尚未配置 {} 授权方式，或配置有误";
+    final private String PLATFORM_LACK_PROPERTY = "{} 缺少参数 {}";
 
     public Oauth2Operations(Oauth2Strategy oauth2Strategy, Oauth2Properties oauth2Properties) {
         this.oauth2Strategy = oauth2Strategy;
@@ -35,13 +38,13 @@ public class Oauth2Operations {
                 .filter(oAuthConfig -> oAuthConfig.getResponseType() == Oauth2ResponseType.code && oAuthConfig.getPlatform().equals(platform))
                 .findFirst();
         if (first.isEmpty())
-            throw new JapException("尚未配置 authorization_code 授权方式");
+            throw new JapException(StrFormatter.format(PLATFORM_NO_AUTH_METHOD,platform,"authorization_code"));
         OAuthConfig oAuthConfig = first.get();
-        return JapUtil.authenticate(this.oauth2Strategy, oAuthConfig);
+        return super.authenticate(this.oauth2Strategy, oAuthConfig);
     }
 
     /**
-     * implicit<br/>
+     * implicit授权方式<br/>
      * response-type=token
      * grant-type 可以不写
      * @param platform platform
@@ -52,9 +55,9 @@ public class Oauth2Operations {
                 .filter(oAuthConfig -> oAuthConfig.getResponseType() == Oauth2ResponseType.token && oAuthConfig.getPlatform().equals(platform))
                 .findFirst();
         if (first.isEmpty())
-            throw new JapException("尚未配置 implicit 授权方式");
+            throw new JapException(StrFormatter.format(PLATFORM_NO_AUTH_METHOD,platform,"implicit"));
         OAuthConfig oAuthConfig = first.get();
-        return JapUtil.authenticate(this.oauth2Strategy, oAuthConfig);
+        return super.authenticate(this.oauth2Strategy, oAuthConfig);
     }
 
     /**
@@ -65,11 +68,11 @@ public class Oauth2Operations {
      * @return JapResponse
      */
     public JapResponse authenticateByPassword(String platform, String username, String password){
-        OAuthConfig oauthConfig = findOauthConfig(platform, Oauth2GrantType.password);
+        OAuthConfig oauthConfig = findOauthConfigByGrantType(platform, Oauth2GrantType.password);
         OAuthConfig newOauthConfig = BeanUtil.copyProperties(oauthConfig, OAuthConfig.class, "username", "password");
         newOauthConfig.setUsername(username);
         newOauthConfig.setPassword(password);
-        return JapUtil.authenticate(this.oauth2Strategy, newOauthConfig);
+        return super.authenticate(this.oauth2Strategy, newOauthConfig);
     }
 
     /**
@@ -80,53 +83,70 @@ public class Oauth2Operations {
      * @return JapResponse
      */
     public JapResponse authenticateByClientCredentials(String platform){
-        OAuthConfig oauthConfig = findOauthConfig(platform, Oauth2GrantType.client_credentials);
-        return JapUtil.authenticate(this.oauth2Strategy, oauthConfig);
+        OAuthConfig oauthConfig = findOauthConfigByGrantType(platform, Oauth2GrantType.client_credentials);
+        return super.authenticate(this.oauth2Strategy, oauthConfig);
     }
 
 
     /**
-     * refresh-token<br/>
+     * refresh-token授权方式<br/>
      * response-type=none<br/>
      * grant-type=refresh-token<br/>
      * @param platform platform
      * @return JapResponse
      */
     public JapResponse refreshToken(String platform, String refreshToken){
-        OAuthConfig oauthConfig = findOauthConfig(platform, Oauth2GrantType.refresh_token);
+        OAuthConfig oauthConfig = findOauthConfigByGrantType(platform, Oauth2GrantType.refresh_token);
         return this.oauth2Strategy.refreshToken(oauthConfig, refreshToken);
     }
 
+    /**
+     * 配置文件中必不可少的是revoke-token-url
+     * @param platform
+     * @param accessToken
+     * @return
+     */
     public JapResponse revokeToken(String platform, String accessToken){
         Optional<OAuthConfig> first = this.oauth2Properties.getOauth2().stream()
                 .filter(oAuthConfig -> oAuthConfig.getPlatform().equals(platform) && !ObjectUtil.isNull(oAuthConfig.getRevokeTokenUrl()))
                 .findFirst();
         if (first.isEmpty())
-            throw new JapException(platform+"尚未配置 revoke-token-url");
+            throw new JapException(StrFormatter.format(PLATFORM_LACK_PROPERTY,platform,"revoke-token-url"));
         OAuthConfig oAuthConfig = first.get();
         return oauth2Strategy.revokeToken(oAuthConfig,accessToken);
 
     }
 
+    /**
+     * 配置文件中必不可少的是user-info-url
+     * @param platform
+     * @param accessToken
+     * @return
+     */
     public JapResponse getUserInfo(String platform, AccessToken accessToken){
         Optional<OAuthConfig> first = this.oauth2Properties.getOauth2().stream()
                 .filter(oAuthConfig -> oAuthConfig.getPlatform().equals(platform) && !ObjectUtil.isNull(oAuthConfig.getUserinfoUrl()))
                 .findFirst();
         if (first.isEmpty())
-            throw new JapException(platform+"尚未配置 user-info-url");
+            throw new JapException(StrFormatter.format(PLATFORM_LACK_PROPERTY,platform,"user-info-url"));
         OAuthConfig oAuthConfig = first.get();
         return oauth2Strategy.getUserInfo(oAuthConfig, accessToken);
     }
 
 
-
-    private OAuthConfig findOauthConfig(String platform, Oauth2GrantType grantType){
+    /**
+     * 通过{@link Oauth2GrantType}来寻找配置信息，返回匹配的第一个{@link OAuthConfig}实例
+     * @param platform platform. eg. gitee,github
+     * @param grantType grantType:authorization_code, password, client_credentials, refresh_token
+     * @return
+     */
+    private OAuthConfig findOauthConfigByGrantType(String platform, Oauth2GrantType grantType){
         Optional<OAuthConfig> first = oauth2Properties.getOauth2()
                 .stream()
                 .filter(oAuthConfig -> oAuthConfig.getGrantType() == grantType && oAuthConfig.getPlatform().equals(platform))
                 .findFirst();
         if (first.isEmpty())
-            throw new JapException("尚未配置 authorization_code 授权方式");
+            throw new JapException(StrFormatter.format(PLATFORM_NO_AUTH_METHOD,platform,grantType.toString()));
         return first.get();
     }
 

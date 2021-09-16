@@ -3,20 +3,12 @@ package com.fujieid.jap.spring.boot.common.util;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.fujieid.jap.core.JapUserService;
-import com.fujieid.jap.core.config.AuthenticateConfig;
 import com.fujieid.jap.core.exception.JapException;
-import com.fujieid.jap.core.result.JapResponse;
-import com.fujieid.jap.core.strategy.AbstractJapStrategy;
-import com.fujieid.jap.spring.boot.common.autoconfigure.JapUserServiceType;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 public class JapUtil {
+    public static String STRATEGY_NO_USERSERVICE = "{} 没有指定相应的JapUserService";
     /**
      * 提供3种方式获得JapUserService：<br/>
      * 1.application.properties中配置service的binary name;<br/>
@@ -29,29 +21,12 @@ public class JapUtil {
      * @return
      */
     public static JapUserService getUserService(ApplicationContext applicationContext,
-                                                String japUserServiceType, Class<?> clazz) throws BeansException{
-        if (!ObjectUtil.isNull(clazz) && !ClassUtil.isAssignable(JapUserService.class,clazz)) {
-            throw new JapException("Unsupported parameter type, please use " + ClassUtil.getClassName(JapUserService.class, true) + ", an implement of JapUserService");
+                                                String japUserServiceType, Class<?> clazz){
+        if (!ObjectUtil.isNull(clazz) && !ClassUtil.isAssignable(JapUserService.class, clazz)) {
+            throw new JapException("不支持的参数类型, clazz, 请使用 " + ClassUtil.getClassName(JapUserService.class, true) + "的一个实现类");
         }
         return applicationContext.containsBean(japUserServiceType) ?
                 (JapUserService) applicationContext.getBean(japUserServiceType) :
                 (JapUserService) applicationContext.getBean(clazz);
-    }
-    public static JapResponse authenticate(AbstractJapStrategy abstractJapStrategy,
-                                       AuthenticateConfig authenticateConfig){
-        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        if (ObjectUtil.isNull(requestAttributes)) {
-            return JapResponse.error(400, "当前请求（线程）不存在request上下文");
-        }
-        HttpServletRequest request = requestAttributes.getRequest();
-        HttpServletResponse response = requestAttributes.getResponse();
-        return authenticate(abstractJapStrategy, authenticateConfig, request, response);
-    }
-
-    public static JapResponse authenticate(AbstractJapStrategy abstractJapStrategy,
-                                       AuthenticateConfig authenticateConfig,
-                                       HttpServletRequest request,
-                                       HttpServletResponse response) {
-        return abstractJapStrategy.authenticate(authenticateConfig, request, response);
     }
 }
