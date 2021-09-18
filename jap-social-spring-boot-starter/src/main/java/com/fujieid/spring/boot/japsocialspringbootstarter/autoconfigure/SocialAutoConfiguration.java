@@ -5,24 +5,21 @@ import com.fujieid.jap.core.JapUserService;
 import com.fujieid.jap.core.cache.JapCache;
 import com.fujieid.jap.core.exception.JapSocialException;
 import com.fujieid.jap.social.SocialStrategy;
-import com.fujieid.jap.spring.boot.common.autoconfigure.CacheType;
-import com.fujieid.jap.spring.boot.common.autoconfigure.JapBasicProperties;
-import com.fujieid.jap.spring.boot.common.autoconfigure.JapUserServiceType;
+import com.fujieid.jap.spring.boot.common.JapUserServiceType;
+import com.fujieid.jap.spring.boot.common.autoconfigure.*;
 import com.fujieid.jap.spring.boot.common.util.JapUtil;
-import com.fujieid.spring.boot.japsocialspringbootstarter.cache.RedisAuthStateCache;
 import lombok.extern.slf4j.Slf4j;
-import me.zhyd.oauth.cache.AuthDefaultStateCache;
 import me.zhyd.oauth.cache.AuthStateCache;
 import org.springframework.beans.BeansException;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.core.RedisTemplate;
 
-@Configuration
+
 @EnableConfigurationProperties({SocialProperties.class, SocialCacheProperties.class})
+@AutoConfigureAfter({JapBasicAutoConfiguration.class})
 @Slf4j
 public class SocialAutoConfiguration {
     @Bean
@@ -40,21 +37,5 @@ public class SocialAutoConfiguration {
             log.error(error);
             throw new JapSocialException(error, e.getCause());
         }
-    }
-
-
-    @Bean
-    @ConditionalOnMissingBean
-    public AuthStateCache authStateCache(SocialCacheProperties socialCacheProperties,
-                                         RedisTemplate<String, String> redisTemplate){
-        CacheType type = socialCacheProperties.getType();
-        if (type.equals(CacheType.DEFAULT))
-            return AuthDefaultStateCache.INSTANCE;
-        if (type.equals(CacheType.REDIS)){
-            return new RedisAuthStateCache(redisTemplate,socialCacheProperties);
-        }
-        log.warn("缺少me.zhyd.oauth.cache.AuthStateCache实例，请自行实现");
-        return null;
-
     }
 }

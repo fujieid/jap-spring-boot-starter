@@ -1,4 +1,4 @@
-package com.fujieid.jap.spring.boot.common.autoconfigure;
+package com.fujieid.jap.spring.boot.common;
 
 public interface JapUserServiceType {
     String SIMPLE = "simpleUserService";

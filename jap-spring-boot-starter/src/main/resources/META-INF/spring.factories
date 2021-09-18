@@ -1,2 +1,6 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.fujieid.jap.spring.boot.starter.autoconfigure.JapTemplateAutoConfiguration
+com.fujieid.jap.spring.boot.starter.autoconfigure.JapTemplateAutoConfiguration,\
+com.fujieid.jap.spring.boot.starter.autoconfigure.OperationAutoConfiguration.Simple,\
+com.fujieid.jap.spring.boot.starter.autoconfigure.OperationAutoConfiguration.Social,\
+com.fujieid.jap.spring.boot.starter.autoconfigure.OperationAutoConfiguration.Oauth2,\
+com.fujieid.jap.spring.boot.starter.autoconfigure.OperationAutoConfiguration.Oidc

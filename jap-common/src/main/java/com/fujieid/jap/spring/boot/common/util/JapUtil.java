@@ -8,7 +8,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 
 public class JapUtil {
-    public static String STRATEGY_NO_USERSERVICE = "{} 没有指定相应的JapUserService";
+    public static String STRATEGY_NO_USERSERVICE = "{} 没有指定相应的JapUserService。若不使用此策略，请移除maven中相应依赖";
     /**
      * 提供3种方式获得JapUserService：<br/>
      * 1.application.properties中配置service的binary name;<br/>

@@ -1,3 +1,8 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.fujieid.jap.spring.boot.common.autoconfigure.JapBasicAutoConfiguration,\
-  com.fujieid.jap.spring.boot.common.autoconfigure.CacheAutoConfiguration
+  com.fujieid.jap.spring.boot.common.autoconfigure.JapCacheAutoConfiguration.Default,\
+  com.fujieid.jap.spring.boot.common.autoconfigure.JapCacheAutoConfiguration.Redis,\
+  com.fujieid.jap.spring.boot.common.autoconfigure.JapCacheAutoConfiguration.Custom,\
+  com.fujieid.jap.spring.boot.common.autoconfigure.JapUserStoreAutoConfiguration.Default,\
+  com.fujieid.jap.spring.boot.common.autoconfigure.JapUserStoreAutoConfiguration.Redis,\
+  com.fujieid.jap.spring.boot.common.autoconfigure.JapUserStoreAutoConfiguration.Custom

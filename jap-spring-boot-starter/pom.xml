@@ -60,8 +60,15 @@
             <version>0.0.1-SNAPSHOT</version>
             <optional>true</optional>
         </dependency>
-
     </dependencies>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>jap spring boot starter</name>
+            <url>https://maven.pkg.github.com/Vector6662/jap-spring-boot-starter</url>
+        </repository>
+    </distributionManagement>
 
 
 </project>

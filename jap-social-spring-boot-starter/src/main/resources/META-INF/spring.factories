@@ -1,2 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.fujieid.spring.boot.japsocialspringbootstarter.autoconfigure.SocialAutoConfiguration
+  com.fujieid.spring.boot.japsocialspringbootstarter.autoconfigure.SocialAutoConfiguration,\
+  com.fujieid.spring.boot.japsocialspringbootstarter.autoconfigure.AuthStateCacheAutoConfiguration.Default,\
+  com.fujieid.spring.boot.japsocialspringbootstarter.autoconfigure.AuthStateCacheAutoConfiguration.Redis,\
+  com.fujieid.spring.boot.japsocialspringbootstarter.autoconfigure.AuthStateCacheAutoConfiguration.Custom
