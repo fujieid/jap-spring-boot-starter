@@ -1,8 +1,8 @@
 # jap-spring-boot-starter
 
-这是为[JustAuth Plus](https://justauth.plus/)开发的Spring Boot Starter依赖。
+这是为[JustAuth Plus](https://justauth.plus/) 开发的Spring Boot Starter依赖。
 
-访问https://github.com/Vector6662/jap-spring-boot-starter-demo，为本starter的demo。
+访问https://github.com/Vector6662/jap-spring-boot-starter-demo ，为本starter的demo。
 
 ## 快速开始
 
@@ -18,7 +18,7 @@
 </dependency>
 ```
 
-为JustAuth Plus的[四种授权策略](https://justauth.plus/quickstart/)都提供了相应的starter：
+为JustAuth Plus的[四种授权策略](https://justauth.plus/quickstart/) 都提供了相应的starter：
 
 `jap-simple-spring-boot-starter`、`jap-social-spring-boot-starter`、`jap-oauth2-spring-boot-starter`、`jap-oidc-spring-boot-starter`
 
@@ -75,7 +75,7 @@ jap.sso.cookie-name=xxx
 
 ### Step 3：实现`JapUserServiceType`
 
-为oauth2策略创建一个service，具体可以参考[jap-oauth2：实现 `JapUserService` 接口](https://justauth.plus/quickstart/jap-oauth2.html#%E5%AE%9E%E7%8E%B0-japuserservice-%E6%8E%A5%E5%8F%A3)。❗❗❗特别注意的是，**你需要在`@Service`注解中添加参数`JapUserServiceType.OAUTH2`**，表明这是oauth2的`JapUserService`，像这样：
+为oauth2策略创建一个service，具体可以参考[jap-oauth2：实现 `JapUserService` 接口](https://justauth.plus/quickstart/jap-oauth2.html#%E5%AE%9E%E7%8E%B0-japuserservice-%E6%8E%A5%E5%8F%A3) 。❗❗❗特别注意的是，**你需要在`@Service`注解中添加参数`JapUserServiceType.OAUTH2`**，表明这是oauth2的`JapUserService`，像这样：
 
 ```java
 @Service(JapUserServiceType.OAUTH2)
