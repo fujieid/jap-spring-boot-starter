@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.fujieid.jap.spring.boot</groupId>
     <artifactId>jap-spring-boot-starter</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <name>jap-spring-boot-starter</name>
     <description>JustAuthPlus Spring Boot Starter</description>
     <properties>
@@ -69,6 +69,5 @@
             <url>https://maven.pkg.github.com/Vector6662/jap-spring-boot-starter</url>
         </repository>
     </distributionManagement>
-
 
 </project>
