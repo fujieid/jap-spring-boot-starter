@@ -23,7 +23,6 @@ public class CacheProperties {
     /**
      * 用户登录信息的缓存配置
      */
-    // TODO: 2021/9/8 取个什么名字好呢？表示这是用户登录状态的缓存配置
     @NestedConfigurationProperty
     private UserStore user = new UserStore();
 

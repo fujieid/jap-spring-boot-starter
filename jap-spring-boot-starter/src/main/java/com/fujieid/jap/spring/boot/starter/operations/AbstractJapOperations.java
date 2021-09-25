@@ -14,7 +14,7 @@ public abstract class AbstractJapOperations {
     final protected String PLATFORM_NO_CORRESPOND_CONFIG = "{} 没有相应的配置";
 
     /**
-     * 调用此方法需要确保当前线程有请求上下文
+     * 调用此方法请确保当前线程有请求上下文
      * @param abstractJapStrategy
      * @param authenticateConfig
      * @return

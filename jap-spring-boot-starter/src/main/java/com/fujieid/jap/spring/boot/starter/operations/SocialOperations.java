@@ -38,6 +38,6 @@ public class SocialOperations extends AbstractJapOperations{
         SocialConfig socialConfig = this.socialProperties.getSocial().get(platform);
         if (ObjectUtil.isNull(socialConfig))
             throw new JapException(StrFormatter.format(PLATFORM_NO_CORRESPOND_CONFIG,platform));
-        return this.socialStrategy.refreshToken(socialConfig, authToken);
+        return this.socialStrategy.getUserInfo(socialConfig, authToken);
     }
 }

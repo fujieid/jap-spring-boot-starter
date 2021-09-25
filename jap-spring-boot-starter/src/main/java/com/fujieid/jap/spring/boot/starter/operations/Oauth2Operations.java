@@ -27,7 +27,7 @@ public class Oauth2Operations extends AbstractJapOperations{
     }
 
     /**
-     * authorization_code授权方式，以下是必不可少的配置：<br/>
+     * authorization-code授权方式，以下是必不可少的配置：<br/>
      * response-type=code<br/>
      * grant-type=authorization_code<br/>
      * @param platform platform
@@ -61,7 +61,7 @@ public class Oauth2Operations extends AbstractJapOperations{
     }
 
     /**
-     * password授权方式,br/>
+     * password授权方式<br/>
      * response-type=none<br/>
      * grant-type=password<br/>
      * @param platform platform
@@ -102,8 +102,8 @@ public class Oauth2Operations extends AbstractJapOperations{
 
     /**
      * 配置文件中必不可少的是revoke-token-url
-     * @param platform
-     * @param accessToken
+     * @param platform platform
+     * @param accessToken accessToken
      * @return
      */
     public JapResponse revokeToken(String platform, String accessToken){
@@ -119,8 +119,8 @@ public class Oauth2Operations extends AbstractJapOperations{
 
     /**
      * 配置文件中必不可少的是user-info-url
-     * @param platform
-     * @param accessToken
+     * @param platform platform
+     * @param accessToken accessToken
      * @return
      */
     public JapResponse getUserInfo(String platform, AccessToken accessToken){

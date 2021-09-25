@@ -51,6 +51,7 @@
             <groupId>com.fujieid</groupId>
             <artifactId>jap-core</artifactId>
             <version>1.0.4</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

@@ -3,7 +3,6 @@ package com.fujieid.jap.spring.boot.common.autoconfigure;
 import com.fujieid.jap.core.JapUser;
 import com.fujieid.jap.core.store.JapUserStore;
 import com.fujieid.jap.core.store.SessionJapUserStore;
-import com.fujieid.jap.core.store.SsoJapUserStore;
 import com.fujieid.jap.spring.boot.common.cache.RedisJapUserStore;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -18,7 +17,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 //  原因：AbstractJapStrategy的构造器之一：
 //  public AbstractJapStrategy(JapUserService japUserService, JapConfig japConfig, JapUserStore japUserStore, JapCache japCache)
 //  并没有被四种strategy类的任何一个直接调用。
-//  若要”强行“，则需要用到反射。因此，在这里只是作为预留。
+//  若要”强行“，则需要用到反射。这里只作为一个预留。
 @Slf4j
 public class JapUserStoreAutoConfiguration {
 
