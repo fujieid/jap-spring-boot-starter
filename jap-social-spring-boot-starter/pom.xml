@@ -3,51 +3,30 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.4</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <groupId>xyz.dong6662.jap.spring.boot</groupId>
+        <artifactId>jap-spring-boot-stater</artifactId>
+        <version>1.0.0</version>
     </parent>
-    <groupId>com.fujieid.jap.spring.boot</groupId>
+
     <artifactId>jap-social-spring-boot-starter</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>${revision}</version>
     <name>jap-social-spring-boot-starter</name>
-    <description>Demo project for Spring Boot</description>
-    <properties>
-        <java.version>11</java.version>
-    </properties>
+    <description>jap-social Spring Boot starter</description>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
-            <version>2.5.4</version>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <version>2.5.4</version>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>com.fujieid</groupId>
             <artifactId>jap-social</artifactId>
-            <version>1.0.4</version>
         </dependency>
         <dependency>
-            <groupId>com.fujieid.jap.spring.boot</groupId>
+            <groupId>xyz.dong6662.jap.spring.boot</groupId>
             <artifactId>jap-common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
-
-    <distributionManagement>
-        <repository>
-            <id>github</id>
-            <name>jap spring boot starter</name>
-            <url>https://maven.pkg.github.com/Vector6662/jap-spring-boot-starter</url>
-        </repository>
-    </distributionManagement>
 
 </project>

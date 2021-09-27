@@ -10,13 +10,13 @@
 
 #### 1.引入依赖
 
-首先需要引入基本的maven依赖：
+首先需要引入基本的maven依赖，该依赖提供了大量简化的授权方法调用：
 
 ```xml
 <dependency>
-    <groupId>com.fujieid.jap.spring.boot</groupId>
-    <artifactId>jap-spring-boot-starter</artifactId>
-    <version>${VERSION}</version>
+    <groupId>xyz.dong6662.jap.spring.boot</groupId>
+    <artifactId>jap-spring-boot-starter-template</artifactId>
+    <version>1.0.0</version>
 </dependency>
 ```
 
@@ -26,12 +26,12 @@
 <dependency>
     <groupId>com.fujieid.jap.spring.boot</groupId>
     <artifactId>jap-simple-spring-boot-starter</artifactId>
-    <version>${VERSION}</version>
+    <version>1.0.0</version>
 </dependency>
 <dependency>
     <groupId>com.fujieid.jap.spring.boot</groupId>
     <artifactId>jap-oauth2-spring-boot-starter</artifactId>
-    <version>${VERSION}</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
@@ -41,14 +41,16 @@
 <dependency>
     <groupId>com.fujieid.jap.spring.boot</groupId>
     <artifactId>jap-social-spring-boot-starter</artifactId>
-    <version>${VERSION}</version>
+    <version>1.0.0</version>
 </dependency>
 <dependency>
     <groupId>com.fujieid.jap.spring.boot</groupId>
     <artifactId>jap-oidc-spring-boot-starter</artifactId>
-    <version>${VERSION}</version>
+    <version>1.0.0</version>
 </dependency>
 ```
+
+
 
 #### 2.`application.properties`中的基础配置
 

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>xyz.dong6662.jap.spring.boot</groupId>
+        <artifactId>jap-spring-boot-stater</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>jap-spring-boot-starter-template</artifactId>
+    <version>${revision}</version>
+    <name>jap-spring-boot-starter-template</name>
+    <description>JustAuthPlus Spring Boot Starter template</description>
+
+    <dependencies>
+        <!--jap starters-->
+        <dependency>
+            <groupId>xyz.dong6662.jap.spring.boot</groupId>
+            <artifactId>jap-common</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>xyz.dong6662.jap.spring.boot</groupId>
+            <artifactId>jap-simple-spring-boot-starter</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>xyz.dong6662.jap.spring.boot</groupId>
+            <artifactId>jap-social-spring-boot-starter</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>xyz.dong6662.jap.spring.boot</groupId>
+            <artifactId>jap-oauth2-spring-boot-starter</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>xyz.dong6662.jap.spring.boot</groupId>
+            <artifactId>jap-oidc-spring-boot-starter</artifactId>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+
+</project>

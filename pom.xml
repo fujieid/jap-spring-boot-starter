@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>xyz.dong6662.jap.spring.boot</groupId>
+    <artifactId>jap-spring-boot-stater</artifactId>
+    <version>${revision}</version>
+    <packaging>pom</packaging>
+
+    <name>jap-spring-boot-starter</name>
+    <url>https://github.com/fujieid/jap-spring-boot-starter</url>
+    <description>Spring Boot starter for JustAuth Plus. See: https://justauth.plus/ </description>
+
+    <scm>
+        <connection>https://github.com/fujieid/jap-spring-boot-starter</connection>
+        <developerConnection>https://github.com/fujieid/jap-spring-boot-starter</developerConnection>
+        <url>https://github.com/fujieid/jap-spring-boot-starter</url>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>Haodong.Liu</name>
+            <email>825266113@qq.com</email>
+            <url>https://github.com/Vector6662</url>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>LGPL 3.0</name>
+            <url>https://github.com/fujieid/jap-spring-boot-starter/blob/master/LICENSE</url>
+        </license>
+    </licenses>
+
+    <properties>
+        <!--jap spring boot starter version-->
+        <revision>1.0.0</revision>
+        <!--justauth plus version-->
+        <jap.version>1.0.4</jap.version>
+        <spring-boot.version>2.5.4</spring-boot.version>
+        <lombok.version>1.18.20</lombok.version>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <modules>
+        <module>jap-common</module>
+        <module>jap-simple-spring-boot-starter</module>
+        <module>jap-social-spring-boot-starter</module>
+        <module>jap-oauth2-spring-boot-starter</module>
+        <module>jap-oidc-spring-boot-starter</module>
+        <module>jap-spring-boot-starter-template</module>
+    </modules>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <version>${spring-boot.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>${spring-boot.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <version>${spring-boot.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-redis</artifactId>
+                <version>${spring-boot.version}</version>
+            </dependency>
+            <!--jap-->
+            <dependency>
+                <groupId>com.fujieid</groupId>
+                <artifactId>jap-core</artifactId>
+                <version>${jap.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fujieid</groupId>
+                <artifactId>jap-simple</artifactId>
+                <version>${jap.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fujieid</groupId>
+                <artifactId>jap-social</artifactId>
+                <version>${jap.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fujieid</groupId>
+                <artifactId>jap-oauth2</artifactId>
+                <version>${jap.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fujieid</groupId>
+                <artifactId>jap-oidc</artifactId>
+                <version>${jap.version}</version>
+            </dependency>
+
+            <!--jap starter-->
+            <dependency>
+                <groupId>xyz.dong6662.jap.spring.boot</groupId>
+                <artifactId>jap-common</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>xyz.dong6662.jap.spring.boot</groupId>
+                <artifactId>jap-simple-spring-boot-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>xyz.dong6662.jap.spring.boot</groupId>
+                <artifactId>jap-social-spring-boot-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>xyz.dong6662.jap.spring.boot</groupId>
+                <artifactId>jap-oauth2-spring-boot-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>xyz.dong6662.jap.spring.boot</groupId>
+                <artifactId>jap-oidc-spring-boot-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <aggregate>true</aggregate>
+                    <charset>UTF-8</charset>
+                    <encoding>UTF-8</encoding>
+                    <docencoding>UTF-8</docencoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>2.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.9.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>ossrh</id>
+                    <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+                </snapshotRepository>
+                <repository>
+                    <id>ossrh</id>
+                    <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
+            </distributionManagement>
+        </profile>
+    </profiles>
+    
+</project>

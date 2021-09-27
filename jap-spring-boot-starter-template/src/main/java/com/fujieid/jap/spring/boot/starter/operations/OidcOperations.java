@@ -5,7 +5,6 @@ import com.fujieid.jap.core.exception.JapException;
 import com.fujieid.jap.core.result.JapResponse;
 import com.fujieid.jap.oidc.OidcConfig;
 import com.fujieid.jap.oidc.OidcStrategy;
-import com.fujieid.jap.spring.boot.common.util.JapUtil;
 import com.fujieid.spring.boot.japoidcspringbootstarter.autoconfigure.OidcProperties;
 
 public class OidcOperations extends AbstractJapOperations{

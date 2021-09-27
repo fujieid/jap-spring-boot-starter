@@ -27,9 +27,11 @@ public class Oauth2Operations extends AbstractJapOperations{
     }
 
     /**
-     * authorization-code授权方式，以下是必不可少的配置：<br/>
-     * response-type=code<br/>
-     * grant-type=authorization_code<br/>
+     * {@code authorization-code} auth mode, essential configure above:
+     *
+     * <p>response-type=code
+     * <p>grant-type=authorization_code
+     *
      * @param platform platform
      * @return JapResponse
      */
@@ -37,16 +39,17 @@ public class Oauth2Operations extends AbstractJapOperations{
         Optional<OAuthConfig> first = this.oauth2Properties.getOauth2().stream()
                 .filter(oAuthConfig -> oAuthConfig.getResponseType() == Oauth2ResponseType.code && oAuthConfig.getPlatform().equals(platform))
                 .findFirst();
-        if (first.isEmpty())
+        if (!first.isPresent())
             throw new JapException(StrFormatter.format(PLATFORM_NO_AUTH_METHOD,platform,"authorization_code"));
         OAuthConfig oAuthConfig = first.get();
         return super.authenticate(this.oauth2Strategy, oAuthConfig);
     }
 
     /**
-     * implicit授权方式<br/>
-     * response-type=token
-     * grant-type 可以不写
+     * {@code implicit} auth mode.Here is some notes while writing application.properties/yml:
+     * <p>response-type=token
+     * <p>grant-type: none.
+     *
      * @param platform platform
      * @return JapResponse
      */
@@ -54,17 +57,19 @@ public class Oauth2Operations extends AbstractJapOperations{
         Optional<OAuthConfig> first = this.oauth2Properties.getOauth2().stream()
                 .filter(oAuthConfig -> oAuthConfig.getResponseType() == Oauth2ResponseType.token && oAuthConfig.getPlatform().equals(platform))
                 .findFirst();
-        if (first.isEmpty())
+        if (!first.isPresent())
             throw new JapException(StrFormatter.format(PLATFORM_NO_AUTH_METHOD,platform,"implicit"));
         OAuthConfig oAuthConfig = first.get();
         return super.authenticate(this.oauth2Strategy, oAuthConfig);
     }
 
     /**
-     * password授权方式<br/>
-     * response-type=none<br/>
-     * grant-type=password<br/>
+     * password auth mode.Here is some notes while writing application.properties/yml:
+     * <p>response-type: none
+     * <p>grant-type=password
      * @param platform platform
+     * @param username username
+     * @param password password
      * @return JapResponse
      */
     public JapResponse authenticateByPassword(String platform, String username, String password){
@@ -76,9 +81,10 @@ public class Oauth2Operations extends AbstractJapOperations{
     }
 
     /**
-     * clientCredentials授权方式<br/>
-     * response-type=none<br/>
-     * grant-type=client-credentials<br/>
+     * client-credentials auth mode.Here is some notes while writing application.properties/yml:
+     * <p>response-type: none
+     * <p>grant-type=client-credentials
+     *
      * @param platform platform
      * @return JapResponse
      */
@@ -89,10 +95,12 @@ public class Oauth2Operations extends AbstractJapOperations{
 
 
     /**
-     * refresh-token授权方式<br/>
-     * response-type=none<br/>
-     * grant-type=refresh-token<br/>
+     * refresh-token auth mode. Here is some notes while writing application.properties/yml:
+     * <p>response-type: none
+     * <p>grant-type=refresh-token
+     *
      * @param platform platform
+     * @param refreshToken refreshToken
      * @return JapResponse
      */
     public JapResponse refreshToken(String platform, String refreshToken){
@@ -101,16 +109,17 @@ public class Oauth2Operations extends AbstractJapOperations{
     }
 
     /**
-     * 配置文件中必不可少的是revoke-token-url
+     * Node that {@code revoke-token-url} is essential in application.properties/yml.
+     *
      * @param platform platform
      * @param accessToken accessToken
-     * @return
+     * @return JapResponse
      */
     public JapResponse revokeToken(String platform, String accessToken){
         Optional<OAuthConfig> first = this.oauth2Properties.getOauth2().stream()
                 .filter(oAuthConfig -> oAuthConfig.getPlatform().equals(platform) && !ObjectUtil.isNull(oAuthConfig.getRevokeTokenUrl()))
                 .findFirst();
-        if (first.isEmpty())
+        if (!first.isPresent())
             throw new JapException(StrFormatter.format(PLATFORM_LACK_PROPERTY,platform,"revoke-token-url"));
         OAuthConfig oAuthConfig = first.get();
         return oauth2Strategy.revokeToken(oAuthConfig,accessToken);
@@ -118,16 +127,17 @@ public class Oauth2Operations extends AbstractJapOperations{
     }
 
     /**
-     * 配置文件中必不可少的是user-info-url
+     * Node that {@code user-info-url} is essential in application.properties/yml.
+     *
      * @param platform platform
      * @param accessToken accessToken
-     * @return
+     * @return JapResponse
      */
     public JapResponse getUserInfo(String platform, AccessToken accessToken){
         Optional<OAuthConfig> first = this.oauth2Properties.getOauth2().stream()
                 .filter(oAuthConfig -> oAuthConfig.getPlatform().equals(platform) && !ObjectUtil.isNull(oAuthConfig.getUserinfoUrl()))
                 .findFirst();
-        if (first.isEmpty())
+        if (!first.isPresent())
             throw new JapException(StrFormatter.format(PLATFORM_LACK_PROPERTY,platform,"user-info-url"));
         OAuthConfig oAuthConfig = first.get();
         return oauth2Strategy.getUserInfo(oAuthConfig, accessToken);
@@ -135,17 +145,18 @@ public class Oauth2Operations extends AbstractJapOperations{
 
 
     /**
-     * 通过{@link Oauth2GrantType}来寻找配置信息，返回匹配的第一个{@link OAuthConfig}实例
+     * 通过{@link Oauth2GrantType}来寻找配置信息，返回匹配的第一个{@link OAuthConfig}实例。
+     *
      * @param platform platform. eg. gitee,github
      * @param grantType grantType:authorization_code, password, client_credentials, refresh_token
-     * @return
+     * @return JapResponse
      */
     private OAuthConfig findOauthConfigByGrantType(String platform, Oauth2GrantType grantType){
         Optional<OAuthConfig> first = oauth2Properties.getOauth2()
                 .stream()
                 .filter(oAuthConfig -> oAuthConfig.getGrantType() == grantType && oAuthConfig.getPlatform().equals(platform))
                 .findFirst();
-        if (first.isEmpty())
+        if (!first.isPresent())
             throw new JapException(StrFormatter.format(PLATFORM_NO_AUTH_METHOD,platform,grantType.toString()));
         return first.get();
     }

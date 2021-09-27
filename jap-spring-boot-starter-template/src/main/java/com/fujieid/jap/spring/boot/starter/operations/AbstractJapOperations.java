@@ -14,10 +14,11 @@ public abstract class AbstractJapOperations {
     final protected String PLATFORM_NO_CORRESPOND_CONFIG = "{} 没有相应的配置";
 
     /**
-     * 调用此方法请确保当前线程有请求上下文
-     * @param abstractJapStrategy
-     * @param authenticateConfig
-     * @return
+     * make sure the current thread has http request contents while invoking this method.
+     *
+     * @param abstractJapStrategy AbstractJapStrategy
+     * @param authenticateConfig AuthenticateConfig
+     * @return JapResponse
      */
     protected JapResponse authenticate(AbstractJapStrategy abstractJapStrategy,
                                            AuthenticateConfig authenticateConfig){
