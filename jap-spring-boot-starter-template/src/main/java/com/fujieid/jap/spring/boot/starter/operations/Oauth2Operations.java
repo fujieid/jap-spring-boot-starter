@@ -18,7 +18,7 @@ public class Oauth2Operations extends AbstractJapOperations{
     private Oauth2Strategy oauth2Strategy;
     private Oauth2Properties oauth2Properties;
 
-    final private String PLATFORM_NO_AUTH_METHOD = "{} 平台尚未配置 {} 授权方式，或配置有误";
+    final private String PLATFORM_NO_AUTH_METHOD = "{} 平台配置信息在application.properties/yml中不存在，或该平台未配置 {} 授权方式";
     final private String PLATFORM_LACK_PROPERTY = "{} 缺少参数 {}";
 
     public Oauth2Operations(Oauth2Strategy oauth2Strategy, Oauth2Properties oauth2Properties) {
@@ -27,7 +27,7 @@ public class Oauth2Operations extends AbstractJapOperations{
     }
 
     /**
-     * {@code authorization-code} auth mode, essential configure above:
+     * {@code authorization-code} auth mode, essential configure below:
      *
      * <p>response-type=code
      * <p>grant-type=authorization_code
@@ -46,7 +46,7 @@ public class Oauth2Operations extends AbstractJapOperations{
     }
 
     /**
-     * {@code implicit} auth mode.Here is some notes while writing application.properties/yml:
+     * {@code implicit} auth mode. Here is some notes while writing application.properties/yml:
      * <p>response-type=token
      * <p>grant-type: none.
      *

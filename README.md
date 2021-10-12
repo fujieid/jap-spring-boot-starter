@@ -4,11 +4,17 @@
 
 可访问本starter的[demo](https://github.com/Vector6662/jap-spring-boot-starter-demo) ，包含较为详尽的调用流程和相关配置说明。
 
+## 开源仓库地址：
+
+[GitHub](https://github.com/fujieid/jap-spring-boot-starter)
+
+[Gitee](https://gitee.com/fujieid/jap-spring-boot-starter-demo)
+
 ## 快速开始
 
-### 一些基本的配置
+### 1.基本配置
 
-#### 一、引入依赖
+#### 1.1 引入依赖
 
 首先需要引入***template***依赖，该依赖提供了大量简化的授权方法调用：
 
@@ -52,9 +58,9 @@
 
 
 
-#### 二、application.properties中的基础配置
+#### 1.2 application.properties中的基础配置
 
-引入maven依赖后，你需要对jap-spring–boot-starter进行一些基础配置，多数情况下采用默认即可。下面是一些简单的例子：
+引入maven依赖后，你需要对jap-spring–boot-starter进行一些基础配置，多数情况下采用默认即可。下面是一些简单的例子：	
 
 ```properties
 # 基础配置
@@ -72,7 +78,7 @@ jap.sso.cookie-name=xxx
 
 准备工作已完成！下面是Oauth2授权方式的指南，其余授权方式大同小异，[demo](https://github.com/Vector6662/jap-spring-boot-starter-demo)中有详尽的描述。
 
-### 实现Ouath2授权
+### 2.实现Ouath2授权
 
 #### Step 1：为oauth2实现`JapUserServiceType`
 
@@ -153,7 +159,7 @@ public JapResponse authenticateByPassword(String platform, String username, Stri
 
 ## 引入redis缓存
 
-若需采用redis缓存token，或social策略的缓存，需要引入Spring Boot的redis starter：
+若需采用redis来缓存token，或作为social策略的缓存，需要引入Redis的Spring Boot Starter：
 
 ```xml
 <dependency>
