@@ -30,12 +30,12 @@
 
 ```xml
 <dependency>
-    <groupId>com.fujieid.jap.spring.boot</groupId>
+    <groupId>xyz.dong6662.jap.spring.boot</groupId>
     <artifactId>jap-simple-spring-boot-starter</artifactId> <!--jap simple策略-->
     <version>1.0.0</version>
 </dependency>
 <dependency>
-    <groupId>com.fujieid.jap.spring.boot</groupId>
+    <groupId>xyz.dong6662.jap.spring.boot</groupId>
     <artifactId>jap-oauth2-spring-boot-starter</artifactId> <!--jap oauth2策略-->
     <version>1.0.0</version>
 </dependency>
@@ -45,12 +45,12 @@
 
 ```xml
 <dependency>
-    <groupId>com.fujieid.jap.spring.boot</groupId>
+    <groupId>xyz.dong6662.jap.spring.boot</groupId>
     <artifactId>jap-social-spring-boot-starter</artifactId> <!--jap social策略-->
     <version>1.0.0</version>
 </dependency>
 <dependency>
-    <groupId>com.fujieid.jap.spring.boot</groupId>
+    <groupId>xyz.dong6662.jap.spring.boot</groupId>
     <artifactId>jap-oidc-spring-boot-starter</artifactId> <!--jap oidc策略-->
     <version>1.0.0</version>
 </dependency>

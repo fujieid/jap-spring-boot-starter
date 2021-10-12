@@ -18,7 +18,7 @@
 
 ```xml
 <dependency>
-    <groupId>com.fujieid.jap.spring.boot</groupId>
+    <groupId>xyz.dong6662.jap.spring.boot</groupId>
     <artifactId>jap-simple-spring-boot-starter</artifactId>
     <version>1.0.0</version>
 </dependency>
